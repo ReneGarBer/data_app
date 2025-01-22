@@ -6,11 +6,12 @@ from configuration import Configuration
 from logs import logs
 import ee
 import pandas as pd
-
+from sqlalchemy import create_engine, URL
+import psycopg2
 
 class EEpipelines:
 
-    def __init__(self,config: Configuration,credentials):
+    def __init__(self,config: Configuration, credentials: dict):
         self.config = config        
         self.credentials = credentials 
     
@@ -29,17 +30,17 @@ class EEpipelines:
                     self.process_subregion(self.config.dates['desde'],self.config.dates['hasta'],estado)
                 else:
                     
-                    self.pipeline(column,estado,self.config.dates['desde'],self.config.dates['hasta'],logfile=self.config.logs)
+                    self.pipeline_to_csv(column,estado,self.config.dates['desde'],self.config.dates['hasta'],logfile=self.config.logs)
 
         except Exception as e:
             return e
 
     def connect(self):
-        credentials = ee.ServiceAccountCredentials(self.credentials['service_account'],self.credentials['key_path'])
+        credentials = ee.ServiceAccountCredentials(self.credentials['eeAPI']['service_account'],self.credentials['eeAPI']['key_path'])
         ee.Initialize(credentials=credentials)
 
     @logs
-    def pipeline(self,column,value,desde,hasta,logfile=None):
+    def pipeline_to_csv(self,column,value,desde,hasta,logfile=None):
         try:
             self.connect()
             region = self.get_region(column,value)
@@ -102,11 +103,11 @@ class EEpipelines:
                 start, end = int(start_str), int(end_str)
                 for num in range(start, end + 1):
                     value = f"{region}{num:03}"
-                    self.pipeline(column,value,desde,hasta,logfile=self.config.logs)
+                    self.pipeline_to_csv(column,value,desde,hasta,logfile=self.config.logs)
             
             else:
                 value = f"{region}{subregion}"
-                self.pipeline(column,value,desde,hasta,logfile=self.config.logs)    
+                self.pipeline_to_csv(column,value,desde,hasta,logfile=self.config.logs)    
     
     def process_dates(self):
 
@@ -133,6 +134,37 @@ class EEpipelines:
 
             else:
                 column = list(self.config.region['estado'].keys())[0]
-                self.pipeline(column,estado,current_date,next_date,logfile=self.config.logs)
+                self.pipeline_to_csv(column,estado,current_date,next_date,logfile=self.config.logs)
 
             current_date = next_date
+
+    @logs
+    def pipeline_to_db(self):
+        try:
+            engine = self.postgresql_engine()
+            file = f"{self.config.target}{self.config.name}{self.config.dates['desde']}_{self.config.dates['hasta']}.csv"
+            headers = list(self.config.map.values())
+            df = pd.read_csv(file,header=None,names=headers)
+            with engine.connect() as con:
+                df.to_sql(name=self.config.table, con=con, schema="staging",if_exists='append', index=False)   
+            message =( f"Archivo:{self.config.name}{self.config.dates['desde']}_{self.config.dates['hasta']}.csv"
+                f"se cargo con exito Termino con exito")
+            return message 
+        except Exception as e:
+            return f"error: {e}"
+    
+    def postgresql_engine(self):
+        try:
+            url =  URL.create(
+                        "%s+%s"%("postgresql","psycopg2"),
+                        username=self.credentials['postgresql']['db_user'],
+                        password=self.credentials['postgresql']['db_password'],
+                        host=self.credentials['postgresql']['db_host'],
+                        database=self.credentials['postgresql']['db_name'],
+                        port=self.credentials['postgresql']['db_port']
+                    )
+
+            engine = create_engine(url)
+            return engine
+        except Exception as e:
+            return e
