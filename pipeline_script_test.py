@@ -23,7 +23,8 @@ if len(sys.argv) > 1:
 
             credentials = configparser.ConfigParser()
             credentials.read("credentials.ini")
-            credentials = dict(credentials['eeAPI'])
+            #credentials = dict(credentials['eeAPI'])
+            credentials = dict(credentials)
             #print(config)
             #print(credentials)
             eepipeline = EEpipelines(config,credentials)
