@@ -22,5 +22,9 @@ extract_app/full_load.py
 extract_app/*.ini
 extract_app/*.ipynb
 extract_app/prediccion-dengue-c26525b87ddc.json
+extract_app/__pychache__/
 
 dbt_app/*test.py
+dbt_app/.user.yml
+dbt_app/__pychache__/
+dbt_app/profiles.yml
