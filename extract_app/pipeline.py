@@ -33,7 +33,7 @@ class EEpipelines:
                     self.pipeline_to_csv(column,estado,self.config.dates['desde'],self.config.dates['hasta'],logfile=self.config.logs)
 
         except Exception as e:
-            return e
+            raise Exception(f"run_pipeline_csv: {e}")
 
     def connect(self):
         credentials = ee.ServiceAccountCredentials(self.credentials['eeAPI']['service_account'],self.credentials['eeAPI']['key_path'])
@@ -45,7 +45,7 @@ class EEpipelines:
             self.connect()
             region = self.get_region(column,value)
             data = self.get_data(desde,hasta,region)
-            df = self.to_dataframe(data,region)
+            df = self.to_dataframe(data,region)            
             df.drop(self.config.drop, inplace=True,axis=1)
             path = f"{self.config.target}{self.config.name}{self.config.dates['desde']}_{self.config.dates['hasta']}.csv"
             columns = list(self.config.map.keys())            
@@ -56,23 +56,26 @@ class EEpipelines:
             return e
         
     def get_data(self,desde: str, hasta: str,region):
+        try:
+            geografia = region.map(lambda feature: feature.geometry())
 
-        geografia = region.map(lambda feature: feature.geometry())
-
-        data = (ee.ImageCollection(self.config.source["dataset"])
-            .filter(ee.Filter.date(desde,hasta))
-            .filterBounds(geografia)
-            .select(self.config.bands)
-            .map(lambda image: image.set(
-                        {
-                        'fecha': image.get('system:index'),
-                        'start': image.get('system:time_start'),
-                        'end': image.get('system:time_end')
-                        }
+            data = (ee.ImageCollection(self.config.source["dataset"])
+                .filter(ee.Filter.date(desde,hasta))
+                .filterBounds(geografia)
+                .select(self.config.bands)
+                .map(lambda image: image.set(
+                            {
+                            'fecha': image.get('system:index'),
+                            'start': image.get('system:time_start'),
+                            'end': image.get('system:time_end')
+                            }
+                        )
                     )
                 )
-            )
-        return data
+            return data
+        except Exception as e:
+            return f"get_data: {e} con variables: {desde}-{hasta}-{region}"
+
 
     def get_region(self,column,value):
         return ee.FeatureCollection(self.config.region['asset']).filter(ee.Filter.eq(column,value))
@@ -97,6 +100,7 @@ class EEpipelines:
     
     def process_subregion(self,desde,hasta,region):
         column = list(self.config.region['municipios'].keys())[0]
+        #!$
         for subregion in self.config.region['municipios'][column]:
             if '-' in subregion:
                 start_str, end_str = subregion.split('-')

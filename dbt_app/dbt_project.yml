@@ -32,5 +32,21 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   data_app:
     # Config indicated by + and applies to all files under models/example/
-    example:
+    staging:
       +materialized: view
+
+seeds:
+  data_app:
+    estados:
+      +column_types: {
+        cvegeoedo:  char(2),
+        nom_edo:  varchar(31)
+      }
+        
+    municipios:
+      +column_types: {
+        cvegeoedo:  char(2),
+        cvegeomuni: char(5),
+        cve_mun: char(3),
+        nom_mun: varchar(80)
+      }        

@@ -91,3 +91,28 @@ models:
         - name: vp
           description: >
             Presión de vapor de agua promedio parcial. Unidad: Pa. Rango: 0 - 8230. 
+
+  - name: reportes_combinados
+    description: > 
+        Datos unificados de todos los reportes mensuales de cada municipio de jalisco desde 2010 hasta 2024
+    config:
+      materialized: table
+      sort: [anio,cvegeoedo,nom_mun]
+      latest_version: v1
+      columns:
+        - name: anio
+        - name: cvegeoedo
+        - name: cve_mun
+        - name: municipio        
+        - name: enero
+        - name: febrero
+        - name: marzo
+        - name: abril
+        - name: mayo
+        - name: junio
+        - name: julio
+        - name: agosto
+        - name: septiembre
+        - name: octubre
+        - name: noviembre
+        - name: diciembre

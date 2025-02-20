@@ -8,14 +8,14 @@ def main():
     if len(sys.argv) < 2 or len(sys.argv) > 5:
         print("Usage: myscript.py [run [-csv | -sql] 'parameter1' ['filename'] | help | logs 'parameter1' ['filename'] ]")
         return
-
+    
     command = sys.argv[1].lower()
 
     if command == "help":
         print("Usage instructions:")
-        print("- run -csv 'parameter1' 'filename' to load CSV into the database.")
-        print("- run -sql 'parameter1' to run a custom SQL command.")
-        print("- logs 'parameter1' 'filename' to perform logging actions.")
+        print("- run -csv 'parameter1' 'filename' Para guardar los datos en formato csv.")
+        print("- run -sql 'parameter1' Para guardar los datos descargados en formato csv a la base de datos.")
+        print("- logs 'parameter1' 'filename' FALTA EXPLICACION.")
     elif command == "run" and len(sys.argv) >= 4:
         option = sys.argv[2].lower()
         name = sys.argv[3]
@@ -29,17 +29,17 @@ def main():
             credentials.read("credentials.ini")
             credentials = {"eeAPI":dict(credentials['eeAPI']), "postgresql":dict(credentials['postgresql'])}
             eepipeline = EEpipelines(config,credentials)
+            if option == "-csv":
+                eepipeline.run_pipeline_csv()
+            elif option == "-sql":
+                eepipeline.pipeline_to_db()
+                
+            else:
+                print("Invalid run command syntax.")
         except Exception as e:
             print(e)
 
-        if option == "-csv":
-            eepipeline.run_pipeline_csv()
-            # print("Borra esto")
-        elif option == "-sql":
-            eepipeline.pipeline_to_db()
-            # print("Borra esto")
-        else:
-            print("Invalid run command syntax.")
+
 
     elif command == "logs" and len(sys.argv) >= 3:
         parameter1 = sys.argv[2]
