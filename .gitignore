@@ -6,7 +6,7 @@ Lib/
 Scripts/
 pyvenv.cfg
 profiles.yml
-*.txt
+
 *.ipynb
 *.log
 *.sql
