@@ -1,0 +1,69 @@
+name: Conditional CI/CD for extract_app and data_app
+
+on:
+  push:
+    branches: [main, feature/**]
+    paths:
+      - 'extract_app/**'
+      - 'data_app/**'
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      app1_changed: ${{ steps.filter.outputs.app1 }}
+      app2_changed: ${{ steps.filter.outputs.app2 }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Detect changes
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            app1:
+              - 'apps/app1/**'
+            app2:
+              - 'apps/app2/**'
+
+  extract_app:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.app1_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests for App1
+        run: |
+          cd apps/app1
+          pip install -r requirements.txt
+          pytest
+
+      - name: Build and push App1 container
+        run: |
+          cd apps/app1
+          docker build -t ghcr.io/${{ github.repository }}/app1:latest .
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker push ghcr.io/${{ github.repository }}/app1:latest
+
+  data_app:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.app2_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests for App2
+        run: |
+          cd apps/app2
+          pip install -r requirements.txt
+          pytest
+
+      - name: Build and push App2 container
+        run: |
+          cd apps/app2
+          docker build -t ghcr.io/${{ github.repository }}/app2:latest .
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker push ghcr.io/${{ github.repository }}/app2:latest
