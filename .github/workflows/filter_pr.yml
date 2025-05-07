@@ -4,15 +4,15 @@ on:
   push:
     branches: [main, feature/**]
     paths:
-      - 'extract_app/**'
-      - 'dbt_app/**'
+      - 'apps/extract_app/**'
+      - 'apps/dbt_app/**'
 
 jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      app1_changed: ${{ steps.filter.outputs.app1 }}
-      app2_changed: ${{ steps.filter.outputs.app2 }}
+      extract_app_changed: ${{ steps.filter.outputs.extract_app }}
+      dbt_app_changed: ${{ steps.filter.outputs.dbt_app }}
 
     steps:
       - name: Checkout
@@ -23,47 +23,31 @@ jobs:
         uses: dorny/paths-filter@v2
         with:
           filters: |
-            app1:
-              - 'apps/app1/**'
-            app2:
-              - 'apps/app2/**'
+            extract_app:
+              - 'apps/extract_app/**'
+            dbt_app:
+              - 'apps/dbt_app/**'
 
   extract_app:
     needs: detect-changes
-    if: needs.detect-changes.outputs.app1_changed == 'true'
+    if: needs.detect-changes.outputs.extract_app_changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run tests for App1
-        run: |
-          cd apps/app1
-          pip install -r requirements.txt
-          pytest
+      - name: echoes something
 
-      - name: Build and push App1 container
-        run: |
-          cd apps/app1
-          docker build -t ghcr.io/${{ github.repository }}/app1:latest .
-          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker push ghcr.io/${{ github.repository }}/app1:latest
+        run: echo "dbt_app change"
+
 
   dbt_app:
     needs: detect-changes
-    if: needs.detect-changes.outputs.app2_changed == 'true'
+    if: needs.detect-changes.outputs.dbt_app_changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run tests for App2
-        run: |
-          cd apps/app2
-          pip install -r requirements.txt
-          pytest
+      - name: echoes something
 
-      - name: Build and push App2 container
-        run: |
-          cd apps/app2
-          docker build -t ghcr.io/${{ github.repository }}/app2:latest .
-          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker push ghcr.io/${{ github.repository }}/app2:latest
+        run: echo "dbt_app change"
+
