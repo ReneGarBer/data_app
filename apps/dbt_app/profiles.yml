@@ -1,0 +1,30 @@
+data_app:
+  target: stg
+  outputs:
+    stg:
+      type: postgres
+      host: "{{env_var('DBT_HOST')}}"
+      user: "{{env_var('DBT_ENV_SECRET_USR_STG')}}"
+      password: "{{env_var('DBT_ENV_SECRET_STGPASSWORD')}}"
+      port: "{{env_var('DBT_PORT') | int}}"
+      dbname: "{{env_var('DBT_ENV_SECRET_DB_NAME')}}"
+      schema: staging
+      threads: 1
+    rfnd:
+      type: postgres
+      host: "{{env_var('DBT_HOST')}}"
+      user: "{{env_var('DBT_ENV_SECRET_USR_RFN')}}"
+      password: "{{env_var('DBT_ENV_SECRET_RFNPASSWORD')}}"
+      port: "{{env_var('DBT_PORT') | int}}"
+      dbname: "{{env_var('DBT_ENV_SECRET_DB_NAME')}}"
+      schema: refined
+      threads: 1
+    anltcs:
+      type: postgres
+      host: "{{env_var('DBT_HOST')}}"
+      user: "{{env_var('DBT_ENV_SECRET_USR_ANLST')}}"
+      password: "{{env_var('DBT_ENV_SECRET_ANLSTPASSWORD')}}"
+      port: "{{env_var('DBT_PORT') | int}}"
+      dbname: "{{env_var('DBT_ENV_SECRET_DB_NAME')}}"
+      schema: analytics
+      threads: 1
