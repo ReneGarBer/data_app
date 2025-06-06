@@ -1,0 +1,45 @@
+version: 2
+
+sources:
+  - name: seeds_dimensions
+    schema: staging
+    tables:
+      
+      - name: estados
+        columns:
+          - name: cvegeoedo
+          - name: nom_edo
+
+      - name: fuentes
+        columns:
+          - name: descripcion
+          - name: estado
+          - name: fecha_activacion
+          - name: fecha_desactivacion
+          - name: feacha_ultimo_cambio
+          - name: nombre
+          - name: url
+            data_tests:
+              - url_valido
+
+      - name: municipios
+        columns:
+          - name: cvegeoedo
+          - name: cvegeomuni
+          - name: cve_mun
+          - name: nom_mun
+      
+      - name: tipos
+        columns:
+          - name: codig
+            data_tests:
+              - not_null
+              - unique
+              - accepted_values:
+                  values: ['ndvi','daily','prcp','srad','swe','tmax','tmin','vp']
+
+          - name: descripcion_corta
+          - name: descripcion_larga
+          - name: nombre
+            data_tests:
+              - not_null

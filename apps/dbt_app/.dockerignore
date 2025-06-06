@@ -1,0 +1,7 @@
+Include/
+Lib/
+logs/
+Scripts/
+Dockerfile
+pyvenv.cfg
+.dockerignore

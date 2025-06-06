@@ -1,0 +1,7 @@
+Lib/
+Scripts/
+*.cfg
+profiles.yml
+.user.yml
+Include/
+logs/
