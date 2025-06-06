@@ -5,3 +5,7 @@ Scripts/
 Dockerfile
 pyvenv.cfg
 .dockerignore
+.env
+.user.yml
+*.cfg
+target/*
