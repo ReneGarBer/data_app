@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: promedios_mensuales_ndvi
+    description: > 
+      
+    config:
+      materialized: view
+      sort: [anio,mes,municipio_num]
+      latest_version: v1
+      columns:
+        - name: anio
+          data_type: char(4)
+        - name: mes
+          data_type: char(2)
+        - name: municipio_num
+          data_type: char(5)
+        - name: ndvi
+
+  - name: promedios_mensuales_surfaceweather
+    description: > 
+      La columna fecha se formate a yyyy_mm_dd
+      Las columnas inicio y fin se formatean a timestamp UTC.
+      Se añade la columna num_de_semana.
+    config:
+      materialized: view
+      sort: [anio,mes,municipio_num]
+      latest_version: v1
+      columns:      
+        - name: anio
+          data_type: char(4)
+        - name: mes
+          data_type: char(2)
+        - name: municipio_num
+          data_type: char(5)
+        - name: dayl
+        - name: prcp
+        - name: srad
+        - name: swe
+        - name: tmax
+        - name: tmin
+        - name: vp

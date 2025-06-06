@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: clean_modis_ndvi_historic
+    description: > 
+      Valores nulos en la columna null son eliminados.
+      La columna fecha se formate a yyyy_mm_dd
+      Las columnas inicio y fin se formatean a timestamp UTC.
+      Se añade la columna num_de_semana.
+    config:
+      materialized: table
+      sort: [inicio,estado_num,municipio_num]
+      latest_version: v1
+      columns:
+        - name: estado_num
+          description: >
+            numero de identificacion de cada estado, corresponde a la columna cvegeoedo
+            de la tabla staging.estados.          
+        - name: municipio_num
+          description: >
+            numero de identificacion de cada municipio, corresponde a la columna cvegeomuni.
+            de la tabla staging.municipios          
+        - name: municipio
+          description: Nombre del municipio          
+        - name: fecha
+          description: Fecha en formato YYYYMMDD a la que corresponde el registro.           
+        - name: inicio
+          description: >
+            Fecha en formato timestamp en milisegundos desde el epoch, marca el inicio de la
+            ventana de tiempo de los datos recolectados.          
+        - name: fin
+          description:  >
+            Fecha en formato timestamp en milisegundos desde el epoch, marca el fin de la
+            ventana de tiempo de los datos recolectados.
+          name: ndvi
+          description: >
+            Índice de vegetación de diferencia normalizada. Tamaño de pixel: 463.313m. Rango: -1 - 1.
+
+  - name: clean_nasa_surface_weather_historic
+    description: > 
+      La columna fecha se formate a yyyy_mm_dd
+      Las columnas inicio y fin se formatean a timestamp UTC.
+      Se añade la columna num_de_semana.
+    config:
+      materialized: table
+      sort: [inicio,estado_num,municipio_num]
+      latest_version: v1
+      columns:
+        - name: estado_num
+          description: >
+            numero de identificacion de cada estado, corresponde a la columna cvegeoedo
+            de la tabla staging.estados.          
+        - name: municipio_num
+          description: >
+            numero de identificacion de cada municipio, corresponde a la columna cvegeomuni.
+            de la tabla staging.municipios          
+        - name: municipio
+          description: Nombre del municipio          
+        - name: fecha
+          description: Fecha en formato YYYYMMDD a la que corresponde el registro.           
+        - name: inicio
+          description: >
+            Fecha en formato timestamp en milisegundos desde el epoch, marca el inicio de la
+            ventana de tiempo de los datos recolectados.          
+        - name: fin
+          description:  >
+            Fecha en formato timestamp en milisegundos desde el epoch, marca el fin de la
+            ventana de tiempo de los datos recolectados.
+        - name: dayl
+          description: >
+            duración del periodo de luz de día, basado en el periodo del dia durante el cual el sol está
+            arriba de un horizonte plano hipotético. Unidad: Segundos. Rango: 0 - 86400.            
+        - name: prcp
+          description: >
+            Precipitación total diaria, sumatoria de todas las formas convertidos a equivalentes en agua.
+            Unidad: mm. Rango: 0 - 544.             
+        - name: srad
+          description: >
+            Densidad de flujo de radiación de onda corta incidente, tomada como un promedio durante 
+            el período de luz diurna del día. Unidad: W/m**2. Rango: 0 - 1051.                        
+        - name: swe
+          description: >
+            Equivalente del agua de nieve, la cantidad de agua contenida dentro de una capa de nieve
+            Unidad kg/m**2. Rango 0 - 13931.                          
+        - name: tmax
+          description: >
+            Temperatura del aire máxima diaria de 2 metros. Unidad: °C. Rango: -60 - 60.             
+        - name: tmin
+          description: >
+            Temperatura del aire mínima diaria de 2 metros. Unidad: °C. Rango: -60 - 42.            
+        - name: vp
+          description: >
+            Presión de vapor de agua promedio parcial. Unidad: Pa. Rango: 0 - 8230. 
+
+  - name: reportes_combinados
+    description: > 
+        Datos unificados de todos los reportes mensuales de cada municipio de jalisco desde 2010 hasta 2024
+    config:
+      materialized: table
+      sort: [anio,cvegeoedo,nom_mun]
+      latest_version: v1
+      columns:
+        - name: anio
+        - name: cvegeoedo
+        - name: cve_mun
+        - name: municipio        
+        - name: enero
+        - name: febrero
+        - name: marzo
+        - name: abril
+        - name: mayo
+        - name: junio
+        - name: julio
+        - name: agosto
+        - name: septiembre
+        - name: octubre
+        - name: noviembre
+        - name: diciembre
