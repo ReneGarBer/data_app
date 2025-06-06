@@ -1,3 +1,7 @@
+dbt_packages/*
+Lib/*
+Scripts/*
+Include/*
 Lib/
 Scripts/
 *.cfg
