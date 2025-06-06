@@ -1,0 +1,4 @@
+earthengine-api
+pandas
+sqlalchemy
+psycopg2-binary

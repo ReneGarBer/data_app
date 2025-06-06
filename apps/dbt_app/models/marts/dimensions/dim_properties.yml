@@ -1,0 +1,136 @@
+version: 2
+
+models:
+  - name: dim_fecha
+    description: Dimension de fecha con granularidad diaria, desde el anio 2010-01-01 hasta el 2035-01-01.
+    latest_version: 2
+    config:
+      materialized: table
+      unique_key: id_fecha
+      meta:
+        developer: Rene Garcia Bernal
+        created_at: 2025-05-31
+        maintained_by: renesoftdev@gmail.com
+        freshness_policy: static
+    columns:
+      - name: id_fecha
+        description: Corresponde a la fecha en formato 'YYYYMMDD'.
+
+      - name: dia_anio
+        description: Dia del anio 1 - 365 (366 para anios bisiesto).
+
+      - name: mes
+        description: Mes del anio 01 - 12.
+
+      - name: anio
+        description: Anio 2010 a 2034.
+
+      - name: dia_semana
+        description: Nombre del dia de la semana.
+
+      - name: dia_semana_num
+        description: Dia de la semana 0 - 6 de domingo a sabado.
+
+      - name: fecha_completa
+        description: Fecha completa en formato 'YYYY-MM-DD'
+
+      - name: semana_num
+        description: Numero de la semana del anio
+    tags: ["dimenional","calendar"]
+
+    versions:
+      - v: 1
+        description: Primera version del modelo fechas
+
+      - v: 2
+        description: Se implementan contratos para forzar tipos de datos en cada columna de esta tabla.
+        config:
+          alias: dim_fecha
+          grants:
+            select: ['dengueappanlst']          
+          post_hook: "ALTER TABLE refined.dim_fecha ADD PRIMARY KEY (id_fecha)"
+          contract:
+            enforced: true
+        columns:
+        - name: id_fecha
+          description: Corresponde a la fecha en formato 'YYYYMMDD'.
+          data_type: varchar(8)
+          tests:
+            - not_null
+            - unique
+
+        - name: dia_anio
+          data_type: integer
+            
+        - name: mes
+          data_type: integer
+          
+        - name: anio
+          data_type: varchar(4)
+          
+        - name: dia_semana
+          data_type: varchar(9)
+          
+        - name: dia_semana_num
+          data_type: integer
+          
+        - name: fecha_completa
+          data_type: date
+          
+        - name: semana_num
+          data_type: integer
+
+        
+  - name: dim_region
+    description: "Dimension region. Contiene estados y municipios de mexico"
+    latest_version: 2
+    +post-hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (codigo_completo)"
+    config:
+      materialized: table
+      unique_key: id_region
+      meta:
+        developer: "Rene Garcia Bernal"
+        created_at: '2025-06-03'
+        maintained_by: "renesoftdev@gmail.com"
+        freshness_policy: "static"
+
+      columns:
+        - name: id_region
+          description: "Surrogate Key generado por el sistema"
+          tests:
+            - not_null
+            - unique
+          
+        - name: codigo_estado
+          description: "Primeros dos numeros del codigo correspondiente al estado de la republica"
+
+        - name: codigo_municipio
+          description: "Ultimos tres numeros del codigo correspondiente al municipio del estado"
+
+        - name: codigo_completo
+          description: "Codigo completo como aparece en Google Earth Engine Assets"
+
+        - name: estado
+          description: "Nombre del estado de la republica"
+
+        - name: municipio
+          descripcion: "Nombre del municipio del estado"
+
+    versions:
+      - v: 1
+        description: Primera version del modelo dim_region
+      
+      - v: 2
+        description: Segunda version no incluye id_region
+        config:
+          grants:
+            select: ['dengueappanlst']
+          alias: dim_region
+          post_hook: "ALTER TABLE refined.dim_region ADD PRIMARY KEY (codigo_completo)"
+        columns:
+          - include: "*"
+            exclude: [id_region]
+          - name: codigo_completo
+            tests:
+              - not_null
+              - unique
