@@ -4,3 +4,4 @@ sql/
 prototipos/
 /.env
 token
+*token*
