@@ -91,18 +91,18 @@ jobs:
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
-        if: needs.code_test.outputs.not_failures == 'true'
         with:
           token: ${{ secrets.GH_PUSH_TOKEN }}
           commit-message: "✅ Auto PR: Tests passed for `${{ github.ref_name }}`"
           base: main
-          branch: ${{ github.ref_name }}
+          branch: ${{ github.head_ref }}
           title: "Auto PR: Merge `${{ github.ref_name }}` to `main`"
           body: |
             This pull request was automatically created because all tests passed.
           labels: automerge
 
       - name: Enable Auto-Merge
+        if: steps.cpr.outputs.pull-request-number != ''
         uses: peter-evans/enable-pull-request-automerge@v2
         with:
           token: ${{ secrets.GH_PUSH_TOKEN }}
