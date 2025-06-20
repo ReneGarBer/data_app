@@ -36,7 +36,13 @@ models:
       +materialized: view
 
     marts:
-      +materialized: table 
+      +materialized: table
+
+snapshots:
+  data_app:
+    +schema: marts
+    +database: dengueapp
+    +strategy: timestamp
 
 seeds:
   data_app:
