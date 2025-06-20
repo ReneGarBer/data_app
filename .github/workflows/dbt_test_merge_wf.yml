@@ -102,7 +102,7 @@ jobs:
           labels: automerge
 
       - name: Enable Auto-Merge
-        if: steps.cpr.outputs.pull-request-number != ''
+        if: steps.cpr.outputs.pull-request-number != 0
         uses: peter-evans/enable-pull-request-automerge@v2
         with:
           token: ${{ secrets.GH_PUSH_TOKEN }}
