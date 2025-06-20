@@ -35,6 +35,9 @@ models:
     staging:
       +materialized: view
 
+    marts:
+      +materialized: table 
+
 seeds:
   data_app:
     estados:
