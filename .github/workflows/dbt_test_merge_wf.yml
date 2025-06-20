@@ -85,6 +85,9 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
