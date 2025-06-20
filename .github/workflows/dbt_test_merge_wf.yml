@@ -95,7 +95,7 @@ jobs:
           token: ${{ secrets.GH_PUSH_TOKEN }}
           commit-message: "✅ Auto PR: Tests passed for `${{ github.ref_name }}`"
           base: main
-          branch: ${{ github.head_ref }}
+          branch: ${{ github.ref_name }}
           title: "Auto PR: Merge `${{ github.ref_name }}` to `main`"
           body: |
             This pull request was automatically created because all tests passed.
@@ -103,8 +103,11 @@ jobs:
 
       - name: Enable Auto-Merge
         if: steps.cpr.outputs.pull-request-number != 0
-        uses: peter-evans/enable-pull-request-automerge@v2
+        run:  |
+          echo "${{ steps.cpr.outputs.pull-request-number }}"
+        # uses: peter-evans/enable-pull-request-automerge@v2
         # with:
         #   token: ${{ secrets.GH_PUSH_TOKEN }}
         #   pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-        #   merge-method: merge
+        #   merge-method: merge  # Puedes usar: merge, squash o rebase
+
