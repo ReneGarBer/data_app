@@ -103,8 +103,10 @@ jobs:
 
       - name: Enable Auto-Merge
         if: steps.cpr.outputs.pull-request-number != 0
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.GH_PUSH_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: merge  # Puedes usar: merge, squash o rebase
+        run:  |
+          echo "${{ steps.cpr.outputs.pull-request-number }}"
+        # uses: peter-evans/enable-pull-request-automerge@v2
+        # with:
+        #   token: ${{ secrets.GH_PUSH_TOKEN }}
+        #   pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+        #   merge-method: merge  # Puedes usar: merge, squash o rebase
