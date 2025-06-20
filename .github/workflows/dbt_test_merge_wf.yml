@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install apps/dbt_app/requirements.txt
+          pip install -r apps/dbt_app/requirements.txt
 
       - name: Run tests and capture output
         id: run_tests
@@ -78,8 +78,12 @@ jobs:
             ${{ steps.run_tests.outputs.test_output }}
 
   create_and_merge_pr:
-    name: Create and merge pr
+    name: Create and auto-merge PR to main if tests pass
+    needs: code_test
+    if: needs.code_test.outputs.not_failures == 'true'
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
     steps:
       - name: Create Pull Request
         id: cpr
