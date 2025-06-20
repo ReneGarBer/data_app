@@ -78,6 +78,9 @@ jobs:
             ${{ steps.run_tests.outputs.test_output }}
 
   create_and_merge_pr:
+    name: Create and merge pr
+    runs-on: ubuntu-latest
+    steps:
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
