@@ -1,0 +1,16 @@
+.apps/
+.github/
+.pytest_cache/
+.vscode/
+prototipost/
+sql/
+
+apps/dbt_app/Include/
+apps/dbt_app/Lib/
+apps/dbt_app/Scripts/
+apps/dbt_app/.dockerignore
+apps/dbt_app/.gitignore
+apps/dbt_app/Dockerfile
+apps/dbt_app/profiles.copy
+apps/dbt_app/pyvenv.cfg
+environments/dev/dbt_app/env/

@@ -1,39 +1,13 @@
-version: '3.8'
-
 services:
-  dengueappdb:
-    image: postgres:15
-    container_name: dengueappdb
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - "5432:5432"  
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-      - ./sql/dengueapp_backup.sql:/docker-entrypoint-initdb.d/01_full_backup.sql:ro
-
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    networks:
-      - backend
-
   dbt_app:
     build:
-      context: ./dbt_app
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/dbt_app/Dockerfile
     container_name: dbt_app
     volumes:
-      - ./dbt_app/:/app
-    depends_on:
-      - dengueappdb
-    networks:
-      - backend
+      - .apps/dbt_app/:/app
     env_file:
-      - ./dbt_app/.env
+      - ./environments/dev/dbt_app/.env
   
 
   extract_app:
@@ -43,14 +17,3 @@ services:
     container_name: extract_app
     volumes:
       - ./extract_app/:/app
-    depends_on:
-      - dengueappdb
-    networks:
-      - backend
-    
-volumes:
-  pgdata:
-
-networks:
-  backend:
-    driver: bridge
