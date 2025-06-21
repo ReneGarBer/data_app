@@ -41,7 +41,7 @@ snapshots:
   data_app:
     +schema: marts
     +database: dengueapp
-    +strategy: check
+    +strategy: timestamp
 
 seeds:
   data_app:
