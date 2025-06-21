@@ -36,6 +36,7 @@ jobs:
 
       - name: Run tests and capture output
         id: run_tests
+        working-directory: apps/dbt_app/
         run: |
           dbt debug -t stg > result.log || true
 
