@@ -19,6 +19,16 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       not_failures: ${{steps.run_tests.outputs.not_failures}}
+    env:
+      PGHOST: ${{ secrets.PGHOST }}
+      PGDATABASE: ${{ secrets.PGDATABASE }}
+      PGPORT: ${{ secrets.PGPORT }}
+      PGUSERSTG:  ${{ secrets.PGUSERSTG }}
+      PGPASSWORDSTG:  ${{ secrets.PGPASSWORDSTG }}
+      PGUSERRFND: ${{ secrets.PGUSERRFND }}
+      PGPASSWORDRFND: ${{ secrets.PGPASSWORDRFND }}
+      PGUSERANLST:  ${{ secrets.PGUSERANLST }}
+      PGPASSWORDANLST:  ${{ secrets.PGUSERANLST }}      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -37,6 +47,7 @@ jobs:
       - name: Run tests and capture output
         id: run_tests
         working-directory: apps/dbt_app/
+
         run: |
           dbt debug -t stg > result.log || true
 
