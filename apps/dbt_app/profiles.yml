@@ -1,0 +1,30 @@
+data_app:
+  target: stg
+  outputs:
+    stg:
+      type: postgres
+      host: "{{env_var('PGHOST')}}"
+      user: "{{env_var('PGUSERSTG')}}"
+      password: "{{env_var('PGPASSWORDSTG')}}"
+      dbname: "{{env_var('PGDATABASE')}}"
+      port: "{{env_var('PGPORT') | int }}"
+      schema: staging
+      threads: 1
+    rfnd:
+      type: postgres
+      host: "{{env_var('PGHOST')}}"
+      user: "{{env_var('PGUSERRFND')}}"
+      password: "{{env_var('PGPASSWORDRFND')}}"
+      dbname: "{{env_var('PGDATABASE')}}"
+      port: "{{env_var('PGPORT') | int }}"
+      schema: refined
+      threads: 1
+    anltcs:
+      type: postgres
+      host: "{{env_var('PGHOST')}}"
+      user: "{{env_var('PGUSERANLST')}}"
+      password: "{{env_var('PGPASSWORDANLST')}}"
+      dbname: "{{env_var('PGDATABASE')}}"
+      port: "{{env_var('PGPORT') | int }}"
+      schema: analytics
+      threads: 1
