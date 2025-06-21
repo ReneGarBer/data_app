@@ -40,7 +40,7 @@ jobs:
         run: |
           dbt debug -t stg > result.log || true
 
-          if grep -q "FAILURES" result.log; then
+          if grep -q "check failed" result.log; then
             echo "not_failures=false" >> "$GITHUB_OUTPUT"
           else
             echo "not_failures=true" >> "$GITHUB_OUTPUT"
