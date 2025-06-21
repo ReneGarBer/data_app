@@ -22,8 +22,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          path: apps/dbt_app/
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -38,6 +36,7 @@ jobs:
 
       - name: Run tests and capture output
         id: run_tests
+        working-directory: apps/dbt_app/
         run: |
           dbt debug -t stg > result.log || true
 
