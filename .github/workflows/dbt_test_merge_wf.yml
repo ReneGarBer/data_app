@@ -28,7 +28,7 @@ jobs:
       PGUSERRFND: ${{ secrets.PGUSERRFND }}
       PGPASSWORDRFND: ${{ secrets.PGPASSWORDRFND }}
       PGUSERANLST:  ${{ secrets.PGUSERANLST }}
-      PGPASSWORDANLST:  ${{ secrets.PGUSERANLST }}      
+      PGPASSWORDANLST:  ${{ secrets.PGPASSWORDANLST }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -44,10 +44,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set env variables
+        run: |
+          echo "$PGHOST" >> $GITHUB_ENV
+          echo "$PGDATABASE" >> $GITHUB_ENV
+          echo "$PGPORT" >> $GITHUB_ENV
+          echo "$PGUSERSTG" >> $GITHUB_ENV
+          echo "$PGPASSWORDSTG" >> $GITHUB_ENV
+          echo "$PGPASSWORDSTG" >> $GITHUB_ENV
+          echo "$PGUSERRFND" >> $GITHUB_ENV
+          echo "$PGUSERANLST" >> $GITHUB_ENV
+          echo "$PGPASSWORDANLST" >> $GITHUB_ENV
+
       - name: Run tests and capture output
         id: run_tests
         working-directory: apps/dbt_app/
-
         run: |
           dbt debug -t stg > result.log || true
 
@@ -61,16 +72,6 @@ jobs:
           echo "test_output<<EOF" >> "$GITHUB_OUTPUT"
           echo "$RESULT" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
-        env:
-          PGHOST: ${{ secrets.PGHOST }}
-          PGDATABASE: ${{ secrets.PGDATABASE }}
-          PGPORT: ${{ secrets.PGPORT }}
-          PGUSERSTG:  ${{ secrets.PGUSERSTG }}
-          PGPASSWORDSTG:  ${{ secrets.PGPASSWORDSTG }}
-          PGUSERRFND: ${{ secrets.PGUSERRFND }}
-          PGPASSWORDRFND: ${{ secrets.PGPASSWORDRFND }}
-          PGUSERANLST:  ${{ secrets.PGUSERANLST }}
-          PGPASSWORDANLST:  ${{ secrets.PGUSERANLST }}
 
       - name: Send email with test results
         if: steps.run_tests.outputs.not_failures == 'false'
