@@ -23,7 +23,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          repository: ${{ github.ref_name }}
           path: 'apps/dbt_app/'
 
       - name: Set up Python
