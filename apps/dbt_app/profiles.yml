@@ -3,28 +3,28 @@ data_app:
   outputs:
     stg:
       type: postgres
-      host: "{{env_var('PGHOST')}}"
-      user: "{{env_var('PGUSERSTG')}}"
-      password: "{{env_var('PGPASSWORDSTG')}}"
-      dbname: "{{env_var('PGDATABASE')}}"
-      port: "{{env_var('PGPORT') | int }}"
+      host: "{{env_var('DBT_ENV_SECRET_HOST')}}"
+      user: "{{env_var('DBT_ENV_SECRET_USERSTG')}}"
+      password: "{{env_var('PDBT_ENV_SECRET_PASSWORDSTG')}}"
+      dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
+      port: "{{env_var('DBT_PORT') | int }}"
       schema: staging
       threads: 1
     rfnd:
       type: postgres
-      host: "{{env_var('PGHOST')}}"
-      user: "{{env_var('PGUSERRFND')}}"
-      password: "{{env_var('PGPASSWORDRFND')}}"
-      dbname: "{{env_var('PGDATABASE')}}"
-      port: "{{env_var('PGPORT') | int }}"
+      host: "{{env_var('DBT_ENV_SECRET_HOST')}}"
+      user: "{{env_var('DBT_ENV_SECRET_USERRFND')}}"
+      password: "{{env_var('PDBT_ENV_SECRET_PASSWORDRFND')}}"
+      dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
+      port: "{{env_var('DBT_PORT') | int }}"
       schema: refined
       threads: 1
     anltcs:
       type: postgres
-      host: "{{env_var('PGHOST')}}"
-      user: "{{env_var('PGUSERANLST')}}"
-      password: "{{env_var('PGPASSWORDANLST')}}"
-      dbname: "{{env_var('PGDATABASE')}}"
-      port: "{{env_var('PGPORT') | int }}"
+      host: "{{env_var('DBT_ENV_SECRET_HOST')}}"
+      user: "{{env_var('DBT_ENV_SECRET_USERANLST')}}"
+      password: "{{env_var('PDBT_ENV_SECRET_PASSWORDANLST')}}"
+      dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
+      port: "{{env_var('DBT_PORT') | int }}"
       schema: analytics
       threads: 1

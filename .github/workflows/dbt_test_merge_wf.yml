@@ -23,9 +23,13 @@ jobs:
     env:
       DBT_ENV_SECRET_DATABASE: ${{ secrets.PGDATABASE }}
       DBT_ENV_SECRET_HOST: ${{ secrets.PGHOST }}
-      DBT_ENV_SECRET_PORT: ${{ secrets.PGPORT }}
+      DBT_PORT: ${{ secrets.PGPORT }}
       DBT_ENV_SECRET_USERSTG: ${{ secrets.PGUSERSTG }}
       PDBT_ENV_SECRET_PASSWORDSTG: ${{ secrets.PGPASSWORDSTG }}
+      DBT_ENV_SECRET_USERRFND: ${{ secrets.PGUSERRFND }}
+      PDBT_ENV_SECRET_PASSWORDRFND: ${{ secrets.PGPASSWORDRFND }}
+      DBT_ENV_SECRET_USERANLST: ${{ secrets.PGUSERANLST }}
+      PDBT_ENV_SECRET_PASSWORDANLST: ${{ secrets.PGPASSWORDANLST }}
 
     steps:
       - name: Checkout code
@@ -44,68 +48,65 @@ jobs:
 
       - name: Run tests and capture output
         id: run_tests
-        working-directory: apps/dbt_app/
+        working-directory: apps/dbt_app/          
         run: |
-          dbt debug -t stg
-          
-        # run: |
-        #   dbt debug -t stg > result.log || true
+          dbt debug -t anltcs > result.log || true
 
-        #   if grep -q "check failed" result.log; then
-        #     echo "not_failures=false" >> "$GITHUB_OUTPUT"
-        #   else
-        #     echo "not_failures=true" >> "$GITHUB_OUTPUT"
-        #   fi
+          if grep -q "All checks passed!" result.log; then
+            echo "not_failures=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "not_failures=false" >> "$GITHUB_OUTPUT"
+          fi
 
-        #   RESULT=$(cat result.log)
-        #   echo "test_output<<EOF" >> "$GITHUB_OUTPUT"
-        #   echo "$RESULT" >> "$GITHUB_OUTPUT"
-        #   echo "EOF" >> "$GITHUB_OUTPUT"
+          RESULT=$(cat result.log)
+          echo "test_output<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RESULT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
-      # - name: Send email with test results
-      #   if: steps.run_tests.outputs.not_failures == 'false'
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.gmail.com
-      #     server_port: 587
-      #     username: ${{ secrets.EMAIL_USERNAME }}
-      #     password: ${{ secrets.EMAIL_PASSWORD }}
-      #     subject: "❌ Pytest Failures for Commit ${{ github.sha }}"
-      #     to: renegarciabernal.rg@gmail.com #replace with team emails
-      #     from: GitHub CI Bot <${{ secrets.EMAIL_USERNAME }}>
-      #     body: |
-      #       Hello,
+      - name: Send email with test results
+        if: steps.run_tests.outputs.not_failures == 'false'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "❌ Pytest Failures for Commit ${{ github.sha }}"
+          to: renegarciabernal.rg@gmail.com #replace with team emails
+          from: GitHub CI Bot <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            Hello,
 
-      #       Here are the test results from GitHub Actions:
+            Here are the test results from GitHub Actions:
 
-      #       ${{ steps.run_tests.outputs.test_output }}
+            ${{ steps.run_tests.outputs.test_output }}
 
-  # create_and_merge_pr:
-  #   name: Create and auto-merge PR to main if tests pass
-  #   needs: code_test
-  #   if: needs.code_test.outputs.not_failures == 'true'
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
-  #       with:
-  #         token: ${{ secrets.GH_PUSH_TOKEN }}
-  #         path: apps/dbt_app/
+  create_and_merge_pr:
+    name: Create and auto-merge PR to main if tests pass
+    needs: code_test
+    if: needs.code_test.outputs.not_failures == 'true'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PUSH_TOKEN }}
+          path: apps/dbt_app/
   
-  #     - name: Create Pull Request
-  #       run: |
-  #         BRANCH=$(git rev-parse --abbrev-ref HEAD)
-  #         gh pr create --title "Auto PR" --body "Created by workflow" --base main --head "$BRANCH" || echo "PR may already exist"
+      - name: Create Pull Request
+        run: |
+          BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          gh pr create --title "Auto PR" --body "Created by workflow" --base main --head "$BRANCH" || echo "PR may already exist"
   
-  #     - name: Get PR URL
-  #       id: pr
-  #       run: |
-  #         PR_URL=$(gh pr list --head "$(git rev-parse --abbrev-ref HEAD)" --json url -q '.[0].url')
-  #         echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+      - name: Get PR URL
+        id: pr
+        run: |
+          PR_URL=$(gh pr list --head "$(git rev-parse --abbrev-ref HEAD)" --json url -q '.[0].url')
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
   
-  #     - name: Enable auto-merge
-  #       if: steps.pr.outputs.pr_url != ''
-  #       run: |
-  #         gh pr merge "$PR_URL" --merge --auto || echo "Failed to enable auto-merge"
+      - name: Enable auto-merge
+        if: steps.pr.outputs.pr_url != ''
+        run: |
+          gh pr merge "$PR_URL" --merge --auto || echo "Failed to enable auto-merge"
