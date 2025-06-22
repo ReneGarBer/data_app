@@ -7,7 +7,7 @@ data_app:
       user: "{{env_var('DBT_ENV_SECRET_USERSTG')}}"
       password: "{{env_var('PDBT_ENV_SECRET_PASSWORDSTG')}}"
       dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
-      port: 5432
+      port: "{{env_var('DBT_PORT') | int }}"
       schema: staging
       threads: 1
     rfnd:

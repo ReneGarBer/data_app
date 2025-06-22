@@ -23,7 +23,7 @@ jobs:
     env:
       DBT_ENV_SECRET_DATABASE: ${{ secrets.PGDATABASE }}
       DBT_ENV_SECRET_HOST: ${{ secrets.PGHOST }}
-      DBT_ENV_SECRET_PORT: ${{ secrets.PGPORT }}
+      DBT_PORT: ${{ secrets.PGPORT }}
       DBT_ENV_SECRET_USERSTG: ${{ secrets.PGUSERSTG }}
       PDBT_ENV_SECRET_PASSWORDSTG: ${{ secrets.PGPASSWORDSTG }}
 
