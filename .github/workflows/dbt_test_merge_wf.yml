@@ -53,7 +53,7 @@ jobs:
           pwd
           ls -ltr
           chmod +x tests.sh
-          tests.sh
+          . tests.sh
 
       - name: Send email with test results
         if: steps.run_tests.outputs.not_failures == 'false'
