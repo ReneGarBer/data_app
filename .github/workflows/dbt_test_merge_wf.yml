@@ -100,20 +100,23 @@ jobs:
           token: ${{ secrets.GH_PUSH_TOKEN }}
           commit-message: "Auto PR: Merging ${{ steps.vars.outputs.branch_name }}"
           title: "Auto PR for ${{ steps.vars.outputs.branch_name }}"
+          author: ${{ github.actor }}
           body: "This PR was created automatically after successful tests."
           base: main
           branch: ${{ steps.vars.outputs.branch_name }}
+          delete-branch: true
           labels: automerge
+          path: apps/dbt_app/
 
-      - name: Enable Auto-Merge
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.GH_PUSH_TOKEN }}
-          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
-          merge-method: merge
+      # - name: Enable Auto-Merge
+      #   uses: peter-evans/enable-pull-request-automerge@v2
+      #   with:
+      #     token: ${{ secrets.GH_PUSH_TOKEN }}
+      #     pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+      #     merge-method: merge
 
-      - name: Delete merged branch
-        run: |
-          gh api -X DELETE repos/${{ github.repository }}/git/refs/heads/${{ steps.vars.outputs.branch_name }}
+      # - name: Delete merged branch
+      #   run: |
+      #     gh api -X DELETE repos/${{ github.repository }}/git/refs/heads/${{ steps.vars.outputs.branch_name }}
         # env:
         #   GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
