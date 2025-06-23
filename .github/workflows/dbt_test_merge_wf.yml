@@ -51,8 +51,9 @@ jobs:
         working-directory: apps/dbt_app/tests/    
         run: |
           pwd
-          chmod +x /home/runner/work/data_app/data_app/apps/dbt_app/tests/tests.sh
-          /home/runner/work/data_app/data_app/apps/dbt_app/tests/tests.sh
+          ls -ltr
+          chmod +x tests.sh
+          tests.sh
 
       - name: Send email with test results
         if: steps.run_tests.outputs.not_failures == 'false'
