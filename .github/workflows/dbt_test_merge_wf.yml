@@ -77,32 +77,42 @@ jobs:
 
             ${{ steps.run_tests.outputs.test_output }}
 
-  create_and_merge_pr:
-    name: Create and auto-merge PR to main if tests pass
-    needs: code_test
-    if: needs.code_test.outputs.not_failures == 'true'
+  create_merge_and_cleanup:
+    name: Create, Auto-Merge PR & Delete Branch
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
     env:
-      GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
-      BRANCH: ${{ github.ref_name }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_PUSH_TOKEN }}
-          path: apps/dbt_app/
-  
+
+      - name: Get branch name
+        id: vars
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
       - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ env.GH_TOKEN }}
+          commit-message: "Auto PR: Merging ${{ steps.vars.outputs.branch_name }}"
+          title: "Auto PR for ${{ steps.vars.outputs.branch_name }}"
+          body: "This PR was created automatically after successful tests."
+          base: main
+          branch: ${{ steps.vars.outputs.branch_name }}
+          labels: automerge
+
+      - name: Enable Auto-Merge
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ env.GH_TOKEN }}
+          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          merge-method: merge
+
+      - name: Delete merged branch
         run: |
-          gh pr create --title "Auto PR" --body "Created by workflow" --base main --head "$BRANCH" || echo "PR may already exist"
-  
-      - name: Get PR URL
-        id: pr
-        run: |
-          PR_URL=$(gh pr list --head "$BRANCH" --json url -q '.[0].url')
-          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
-  
-      - name: Enable auto-merge
-        if: steps.pr.outputs.pr_url != ''
-        run: |
-          gh pr merge "$PR_URL" --merge --auto || echo "Failed to enable auto-merge"
+          gh api -X DELETE repos/${{ github.repository }}/git/refs/heads/${{ steps.vars.outputs.branch_name }}
+        env:
+          GH_TOKEN: ${{ env.GH_TOKEN }}
