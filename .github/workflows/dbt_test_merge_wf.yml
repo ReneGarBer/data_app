@@ -48,20 +48,10 @@ jobs:
 
       - name: Run tests and capture output
         id: run_tests
-        working-directory: apps/dbt_app/          
+        working-directory: apps/dbt_app/tests/    
         run: |
-          dbt debug -t rfnd > result.log || true
-
-          if grep -q "All checks passed!" result.log; then
-            echo "not_failures=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "not_failures=false" >> "$GITHUB_OUTPUT"
-          fi
-
-          RESULT=$(cat result.log)
-          echo "test_output<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$RESULT" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          chmod +x tests.sh
+          ./tests.sh
 
       - name: Send email with test results
         if: steps.run_tests.outputs.not_failures == 'false'
@@ -93,7 +83,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_PUSH_TOKEN }}
-          path: apps/dbt_app/
+          path: apps/dbt_app/src/
   
       - name: Create Pull Request
         run: |
