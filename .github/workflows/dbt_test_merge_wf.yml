@@ -50,7 +50,8 @@ jobs:
         id: run_tests
         working-directory: apps/dbt_app/tests/    
         run: |
-          chmod +x tests.sh
+          pwd
+          chmod +x ./tests.sh
           ./tests.sh
 
       - name: Send email with test results
