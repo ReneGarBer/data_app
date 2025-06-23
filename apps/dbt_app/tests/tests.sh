@@ -1,7 +1,7 @@
 #!bin/bash
 
 cd ../src/
-# ls -ltr
+
 dbt debug -t rfnd > result.log || true
 
 if grep -q "All checks passed!" result.log; then
@@ -10,7 +10,8 @@ else
     echo "not_failures=false" >> "$GITHUB_OUTPUT"
 fi
 
-RESULT=$(cat result.log){
+RESULT=$(cat result.log)
+{
     echo "test_output<<EOF"
     echo "$RESULT"
     echo "EOF"
