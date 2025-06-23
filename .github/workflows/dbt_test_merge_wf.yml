@@ -50,8 +50,6 @@ jobs:
         id: run_tests
         working-directory: apps/dbt_app/tests/    
         run: |
-          pwd
-          ls -ltr
           chmod +x tests.sh
           . tests.sh
 
