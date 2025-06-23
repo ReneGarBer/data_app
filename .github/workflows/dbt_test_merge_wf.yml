@@ -100,7 +100,7 @@ jobs:
           token: ${{ secrets.GH_PUSH_TOKEN }}
           commit-message: "Auto PR: Merging ${{ steps.vars.outputs.branch_name }}"
           title: "Auto PR for ${{ steps.vars.outputs.branch_name }}"
-          author: renegarber
+          # author: renegarber
           body: "This PR was created automatically after successful tests."
           base: main
           branch: ${{ steps.vars.outputs.branch_name }}
