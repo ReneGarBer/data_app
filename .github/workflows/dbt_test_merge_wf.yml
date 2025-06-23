@@ -93,7 +93,7 @@ jobs:
       - name: Get PR URL
         id: pr
         run: |
-          PR_URL=$(gh pr list --head "$(git rev-parse --abbrev-ref HEAD)" --json url -q '.[0].url')
+          PR_URL=$(gh pr list --head "$BRANCH" --json url -q '.[0].url')
           echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
   
       - name: Enable auto-merge
