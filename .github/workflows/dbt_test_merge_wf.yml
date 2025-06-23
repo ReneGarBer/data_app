@@ -106,7 +106,7 @@ jobs:
           branch: ${{ steps.vars.outputs.branch_name }}
           delete-branch: true
           labels: automerge
-          path: apps/dbt_app/
+          # path: apps/dbt_app/
 
       # - name: Enable Auto-Merge
       #   uses: peter-evans/enable-pull-request-automerge@v2
