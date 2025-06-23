@@ -5,3 +5,6 @@ prototipos/
 /.env
 token
 *token*
+*.txt
+.apps/
+!apps/dbt_app/requirements.txt

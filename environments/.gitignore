@@ -1,0 +1,2 @@
+dev/dbt_app/local*
+*.ps1
