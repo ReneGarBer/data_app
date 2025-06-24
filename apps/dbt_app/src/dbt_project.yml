@@ -42,7 +42,7 @@ snapshots:
     +schema: marts
     +database: dengueapp
     +strategy: timestamp
-#este comentario es parte del intento 8
+#este comentario es parte del intento 9
 seeds:
   data_app:
     estados:
