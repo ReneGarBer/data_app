@@ -83,28 +83,39 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main'
 
-    # steps:
-    #   - name: Checkout code
-    #     uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for full diff
 
-    #   - name: Check for changes
-    #     run: |
-    #       git status
-    #       git log --oneline -n 5
+      - name: Set up Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
-    #   - name: Create Pull Request
-    #     id: create_pr
-    #     uses: peter-evans/create-pull-request@v5
-    #     with:
-    #       token: ${{ secrets.GH_PUSH_TOKEN }}
-    #       commit-message: "Auto PR: Merging ${{ github.ref_name }}"
-    #       title: "Auto PR for ${{ github.ref_name }}"
-    #       body: "This PR was created automatically after successful tests."
-    #       base: main
-    #       branch: ${{ github.ref_name }}
-    #       # branch: ${{ steps.vars.outputs.branch_name }}
-    #       delete-branch: true
-    #       labels: automerge
-    #   - name: pr output
-    #     id: pr_ourtput
-    #     run: echo "${{ steps.create_pr.outputs.pull-request-number }}"
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      - name: Authenticate GitHub CLI
+        run: |
+          echo "${{ secrets.GH_PUSH_TOKEN }}" | gh auth login --with-token
+
+      - name: Fetch main branch
+        run: git fetch origin main
+
+      - name: Check for differences with main
+        id: check_diff
+        run: |
+          git diff --quiet origin/main..HEAD || echo "has_diff=true" >> $GITHUB_OUTPUT
+
+      - name: Create PR if differences exist
+        if: steps.check_diff.outputs.has_diff == 'true'
+        run: |
+          gh pr create \
+            --base main \
+            --head ${{ github.ref_name }} \
+            --title "Auto PR: ${{ github.ref_name }} → main" \
+            --body "This PR was created automatically after pushing changes to ${{ github.ref_name }}."

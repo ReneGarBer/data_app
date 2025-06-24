@@ -42,7 +42,7 @@ snapshots:
     +schema: marts
     +database: dengueapp
     +strategy: timestamp
-    
+#eliminar este comentario    
 seeds:
   data_app:
     estados:
