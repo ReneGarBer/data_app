@@ -83,28 +83,28 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v3
 
-      - name: Check for changes
-        run: |
-          git status
-          git log --oneline -n 5
+    #   - name: Check for changes
+    #     run: |
+    #       git status
+    #       git log --oneline -n 5
 
-      - name: Create Pull Request
-        id: create_pr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GH_PUSH_TOKEN }}
-          commit-message: "Auto PR: Merging ${{ github.ref_name }}"
-          title: "Auto PR for ${{ github.ref_name }}"
-          body: "This PR was created automatically after successful tests."
-          base: main
-          branch: ${{ github.ref_name }}
-          # branch: ${{ steps.vars.outputs.branch_name }}
-          delete-branch: true
-          labels: automerge
-      - name: pr output
-        id: pr_ourtput
-        run: echo "${{ steps.create_pr.outputs.pull-request-number }}"
+    #   - name: Create Pull Request
+    #     id: create_pr
+    #     uses: peter-evans/create-pull-request@v5
+    #     with:
+    #       token: ${{ secrets.GH_PUSH_TOKEN }}
+    #       commit-message: "Auto PR: Merging ${{ github.ref_name }}"
+    #       title: "Auto PR for ${{ github.ref_name }}"
+    #       body: "This PR was created automatically after successful tests."
+    #       base: main
+    #       branch: ${{ github.ref_name }}
+    #       # branch: ${{ steps.vars.outputs.branch_name }}
+    #       delete-branch: true
+    #       labels: automerge
+    #   - name: pr output
+    #     id: pr_ourtput
+    #     run: echo "${{ steps.create_pr.outputs.pull-request-number }}"
