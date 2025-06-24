@@ -35,14 +35,14 @@ models:
       +materialized: view
 
     marts:
-      +materialized: table
+      +materialized: incremental
 
 snapshots:
   data_app:
     +schema: marts
     +database: dengueapp
     +strategy: timestamp
-#este comentario es parte del intento 9
+#este comentario es parte del intento 10
 seeds:
   data_app:
     estados:
