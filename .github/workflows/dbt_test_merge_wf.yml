@@ -82,6 +82,8 @@ jobs:
     needs: code_test
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main'
+    env:
+      PR_NUMBER: ${{ github.event.number }}
 
     steps:
       - name: Checkout code
@@ -114,8 +116,15 @@ jobs:
       - name: Create PR if differences exist
         if: steps.check_diff.outputs.has_diff == 'true'
         run: |
-          gh pr create \
+            gh pr create \
             --base main \
             --head ${{ github.ref_name }} \
             --title "Auto PR: ${{ github.ref_name }} → main" \
             --body "This PR was created automatically after pushing changes to ${{ github.ref_name }}."
+
+      - name: Merge PR
+        run: |
+          gh pr merge $PR_NUMBER \
+            --merge \
+            --delete-branch \
+            --admin
