@@ -89,7 +89,11 @@ jobs:
 
       - name: Get branch name
         id: vars
-        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+        run:  | 
+          echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+          echo "branch_name=${GITHUB_REF#refs/heads/}"
+          echo "${{ github.ref_name }}""
+        # run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
         id: create_pr
