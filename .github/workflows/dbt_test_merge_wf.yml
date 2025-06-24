@@ -82,8 +82,6 @@ jobs:
     needs: code_test
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main'
-    # env:
-    #   GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -100,7 +98,6 @@ jobs:
           token: ${{ secrets.GH_PUSH_TOKEN }}
           commit-message: "Auto PR: Merging ${{ steps.vars.outputs.branch_name }}"
           title: "Auto PR for ${{ steps.vars.outputs.branch_name }}"
-          # author: renegarber
           body: "This PR was created automatically after successful tests."
           base: main
           branch: ${{ steps.vars.outputs.branch_name }}

@@ -41,8 +41,8 @@ snapshots:
   data_app:
     +schema: marts
     +database: dengueapp
-    +strategy: check
-
+    +strategy: timestamp
+#este comentario es parte del intento 5
 seeds:
   data_app:
     estados:
