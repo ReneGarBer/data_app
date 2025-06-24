@@ -100,7 +100,8 @@ jobs:
           title: "Auto PR for ${{ steps.vars.outputs.branch_name }}"
           body: "This PR was created automatically after successful tests."
           base: main
-          branch: ${{ steps.vars.outputs.branch_name }}
+          branch: ${{ github.ref_name }}
+          # branch: ${{ steps.vars.outputs.branch_name }}
           delete-branch: true
           labels: automerge
 
