@@ -114,8 +114,19 @@ jobs:
       - name: Create PR if differences exist
         if: steps.check_diff.outputs.has_diff == 'true'
         run: |
-          gh pr create \
+          PR_JSON=$(gh pr create \
             --base main \
             --head ${{ github.ref_name }} \
             --title "Auto PR: ${{ github.ref_name }} → main" \
-            --body "This PR was created automatically after pushing changes to ${{ github.ref_name }}."
+            --body "This PR was created automatically after pushing changes to ${{ github.ref_name }}." \
+            --json number)
+
+          PR_NUMBER=$(echo "$PR_JSON" | jq -r '.number')
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Merge PR
+        run: |
+          gh pr merge $PR_NUMBER \
+            --merge \
+            --delete-branch \
+            --admin|
