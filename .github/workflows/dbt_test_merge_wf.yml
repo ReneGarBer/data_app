@@ -38,7 +38,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # Change to your project's Python version
+          python-version: '3.11'
 
       - name: Install dependencies
         working-directory: apps/dbt_app/
@@ -87,9 +87,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # - name: Get branch name
-      #   id: vars
-      #   run:  echo "branch_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+      - name: Check for changes
+        run: |
+          git status
+          git log --oneline -n 5
 
       - name: Create Pull Request
         id: create_pr
@@ -107,9 +108,3 @@ jobs:
       - name: pr output
         id: pr_ourtput
         run: echo "${{ steps.create_pr.outputs.pull-request-number }}"
-      # - name: Enable Auto-Merge
-      #   uses: peter-evans/enable-pull-request-automerge@v2
-      #   with:
-      #     token: ${{ secrets.GH_PUSH_TOKEN }}
-      #     pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
-      #     merge-method: merge
