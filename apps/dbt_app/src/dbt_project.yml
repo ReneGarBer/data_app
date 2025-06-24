@@ -35,7 +35,7 @@ models:
       +materialized: view
 
     marts:
-      +materialized: incremental
+      +materialized: table
 
 snapshots:
   data_app:

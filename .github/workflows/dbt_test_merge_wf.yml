@@ -105,7 +105,7 @@ jobs:
           delete-branch: true
           labels: automerge
       - name: pr output
-        id: pr ourtput
+        id: pr_ourtput
         run: echo "${{ steps.create_pr.outputs.pull-request-number }}"
       # - name: Enable Auto-Merge
       #   uses: peter-evans/enable-pull-request-automerge@v2
