@@ -38,7 +38,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # Change to your project's Python version
+          python-version: '3.11'
 
       - name: Install dependencies
         working-directory: apps/dbt_app/
@@ -82,38 +82,40 @@ jobs:
     needs: code_test
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main'
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Get branch name
-        id: vars
-        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
-
-      - name: Create Pull Request
-        id: create_pr
-        uses: peter-evans/create-pull-request@v5
+        uses: actions/checkout@v4
         with:
-          token: ${{ env.GH_TOKEN }}
-          commit-message: "Auto PR: Merging ${{ steps.vars.outputs.branch_name }}"
-          title: "Auto PR for ${{ steps.vars.outputs.branch_name }}"
-          body: "This PR was created automatically after successful tests."
-          base: main
-          branch: ${{ steps.vars.outputs.branch_name }}
-          labels: automerge
+          fetch-depth: 0  # Needed for full diff
 
-      - name: Enable Auto-Merge
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ env.GH_TOKEN }}
-          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
-          merge-method: merge
-
-      - name: Delete merged branch
+      - name: Set up Git
         run: |
-          gh api -X DELETE repos/${{ github.repository }}/git/refs/heads/${{ steps.vars.outputs.branch_name }}
-        env:
-          GH_TOKEN: ${{ env.GH_TOKEN }}
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      - name: Authenticate GitHub CLI
+        run: |
+          echo "${{ secrets.GH_PUSH_TOKEN }}" | gh auth login --with-token
+
+      - name: Fetch main branch
+        run: git fetch origin main
+
+      - name: Check for differences with main
+        id: check_diff
+        run: |
+          git diff --quiet origin/main..HEAD || echo "has_diff=true" >> $GITHUB_OUTPUT
+
+      - name: Create PR if differences exist
+        if: steps.check_diff.outputs.has_diff == 'true'
+        run: |
+          gh pr create \
+            --base main \
+            --head ${{ github.ref_name }} \
+            --title "Auto PR: ${{ github.ref_name }} → main" \
+            --body "This PR was created automatically after pushing changes to ${{ github.ref_name }}."
