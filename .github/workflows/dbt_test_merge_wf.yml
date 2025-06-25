@@ -25,11 +25,11 @@ jobs:
       DBT_ENV_SECRET_HOST: ${{ secrets.PGHOST }}
       DBT_PORT: ${{ secrets.PGPORT }}
       DBT_ENV_SECRET_USERSTG: ${{ secrets.PGUSERSTG }}
-      PDBT_ENV_SECRET_PASSWORDSTG: ${{ secrets.PGPASSWORDSTG }}
+      DBT_ENV_SECRET_PASSWORDSTG: ${{ secrets.PGPASSWORDSTG }}
       DBT_ENV_SECRET_USERRFND: ${{ secrets.PGUSERRFND }}
-      PDBT_ENV_SECRET_PASSWORDRFND: ${{ secrets.PGPASSWORDRFND }}
+      DBT_ENV_SECRET_PASSWORDRFND: ${{ secrets.PGPASSWORDRFND }}
       DBT_ENV_SECRET_USERANLST: ${{ secrets.PGUSERANLST }}
-      PDBT_ENV_SECRET_PASSWORDANLST: ${{ secrets.PGPASSWORDANLST }}
+      DBT_ENV_SECRET_PASSWORDANLST: ${{ secrets.PGPASSWORDANLST }}
 
     steps:
       - name: Checkout code
