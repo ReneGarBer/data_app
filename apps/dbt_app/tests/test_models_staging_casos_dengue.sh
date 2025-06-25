@@ -1,5 +1,6 @@
 cd ../src/
 
+dbt deps
 dbt run --full-refresh -s staging.staging_casos_dengue -t stg
 
 dbt debug test -s staging.staging_casos_dengue -t stg > result.log || true
