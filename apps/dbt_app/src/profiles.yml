@@ -5,7 +5,7 @@ data_app:
       type: postgres
       host: "{{env_var('DBT_ENV_SECRET_HOST')}}"
       user: "{{env_var('DBT_ENV_SECRET_USERSTG')}}"
-      password: "{{env_var('PDBT_ENV_SECRET_PASSWORDSTG')}}"
+      password: "{{env_var('DBT_ENV_SECRET_PASSWORDSTG')}}"
       dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
       port: "{{env_var('DBT_PORT') | int }}"
       schema: staging
@@ -14,7 +14,7 @@ data_app:
       type: postgres
       host: "{{env_var('DBT_ENV_SECRET_HOST')}}"
       user: "{{env_var('DBT_ENV_SECRET_USERRFND')}}"
-      password: "{{env_var('PDBT_ENV_SECRET_PASSWORDRFND')}}"
+      password: "{{env_var('DBT_ENV_SECRET_PASSWORDRFND')}}"
       dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
       port: "{{env_var('DBT_PORT') | int }}"
       schema: refined
@@ -23,7 +23,7 @@ data_app:
       type: postgres
       host: "{{env_var('DBT_ENV_SECRET_HOST')}}"
       user: "{{env_var('DBT_ENV_SECRET_USERANLST')}}"
-      password: "{{env_var('PDBT_ENV_SECRET_PASSWORDANLST')}}"
+      password: "{{env_var('DBT_ENV_SECRET_PASSWORDANLST')}}"
       dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
       port: "{{env_var('DBT_PORT') | int }}"
       schema: analytics
