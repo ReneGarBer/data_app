@@ -23,4 +23,4 @@ models:
       - name: casos
         tests:
           - not_null
-    tagas: ["entrenamiento","target_values"]
+    tags: ["entrenamiento","target_values"]

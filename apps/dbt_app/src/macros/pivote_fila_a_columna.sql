@@ -9,7 +9,12 @@
     {% for col in columnas %}
         SELECT
             {% for i in incluir %}
-                "{{i}}",
+                {% if 'as' in i %}
+                    {% set parts = i.split(' as ')%}
+                        {{parts[0]}} as {{parts[1]}},
+                {% else %}
+                    "{{i}}",
+                {% endif %}
             {% endfor %} 
             '{{ col }}' as  {{ columna }}, 
             "{{col}}" as {{ valor }} 
