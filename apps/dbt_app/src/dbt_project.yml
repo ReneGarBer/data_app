@@ -32,19 +32,25 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   data_app:
     staging:
+      schema: staging
+      +grants:
+        select: ['dengueapprfnd']
       +materialized: view
-
+      casos_dengue:
+        mensuales:
+          +tags:
+            - monthly
     marts:
-      +materialized: table
+      +materialized: incremental
 
 snapshots:
   data_app:
-    +schema: marts
-    +database: dengueapp
-    +strategy: timestamp
+    +schema: snapshots
         
 seeds:
   data_app:
+    +schema: rawdata
+    +database: dengueapp
     estados:
       +column_types: {
         cvegeoedo:  char(2),
@@ -61,10 +67,10 @@ seeds:
 
     fuentes: 
       +column_types: {
+        id: int,
         descripcion: text,
-        fecha_activacion: varchar(8),
-        fecha_desactivacion: timestamp,
-        feacha_ultimo_cambio: timestamp,
+        fecha_disponibilidad_inicio: varchar(10),
+        fecha_disponibilidad_final: varchar(10),
         nombre: varchar(50),
         url: text
       }       
