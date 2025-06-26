@@ -1,0 +1,55 @@
+version: 2
+
+sources:
+  - name: raw_data
+    description:  "Datos crudos"
+    database: dengueapp
+    schema: rawdata
+    tables:
+      - name: "2010"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2010. Granularidad: municipio"
+            
+      - name: "2011"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2011. Granularidad: municipio"
+
+      - name: "2012"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2012. Granularidad: municipio"
+
+      - name: "2013"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2013. Granularidad: municipio"
+            
+      - name: "2014"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2014. Granularidad: municipio"
+            
+      - name: "2015"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2015. Granularidad: municipio"
+            
+      - name: "2016"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2016. Granularidad: municipio"
+            
+      - name: "2017"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2017. Granularidad: municipio"
+            
+      - name: "2018"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2018. Granularidad: municipio"
+            
+      - name: "2019"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2019. Granularidad: municipio"
+            
+      - name: "2020"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2020. Granularidad: municipio"
+            
+      - name: "2021"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2021. Granularidad: municipio"
+            
+      - name: "2022"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2022. Granularidad: municipio"
+            
+      - name: "2023"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2023. Granularidad: municipio"
+            
+      - name: "2024"
+        descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2024. Granularidad: municipio"
+      
+      - name: "fuentes"
+        descripcion: "Informacion sobre las fuentes de los datos utilizados en este proyecto"

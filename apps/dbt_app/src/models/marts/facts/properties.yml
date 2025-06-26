@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: fac_casos_dengue
+    description: Tabla de hechos de casos de dengue en jalisco
+    columns:
+      - name: id_fecha_carga
+        tests:
+          - relationships:
+              to: ref('dim_fecha')
+              field: id_fecha
+
+      - name: id_fecha_inicial
+        tests:
+          - relationships:
+              to: ref('dim_fecha')
+              field: id_fecha
+
+      - name: id_fecha_final
+        tests:
+          - relationships:
+              to: ref('dim_fecha')
+              field: id_fecha
+      
+      - name: id_fuente
+        tests:
+          - relationships:
+              to: ref('dim_fuente')
+              field: id
+
+      - name: id_region
+        tests:
+          - relationships:
+              to: ref('dim_region')
+              field: codigo_completo
