@@ -1,4 +1,12 @@
+{{
+    config(
+        materialized='view'
+    )
+}}
+
 SELECT
     *
 FROM
-    {{ source('seeds_dimensions','fuentes') }}
+    {{ ref('snp_fuentes') }}
+WHERE
+    valido_hasta IS NULL
