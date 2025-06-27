@@ -2,7 +2,7 @@
 .vscode/
 sql/
 prototipos/
-/.env
+environments/*
 token
 *token*
 *.txt

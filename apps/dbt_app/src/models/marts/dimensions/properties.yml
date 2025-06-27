@@ -79,8 +79,7 @@ models:
           
         - name: semana_num
           data_type: integer
-
-        
+    
   - name: dim_region
     description: "Dimension region. Contiene estados y municipios de mexico"
     latest_version: 2
@@ -127,10 +126,21 @@ models:
             select: ['dengueappanlst']
           alias: dim_region
           post_hook: "ALTER TABLE refined.dim_region ADD PRIMARY KEY (codigo_completo)"
+          enabled: true
         columns:
           - include: "*"
             exclude: [id_region]
+
           - name: codigo_completo
             tests:
               - not_null
               - unique
+
+  - name: dim_fuentes
+    description: "Dimension fuentes. Vista que incluye solo las versiones mas actualizadas de cada fuente"
+    config:
+      meta:
+        developer: "Rene Garcia Bernal"
+        created_at: '2025-06-27'
+        maintained_by: "renesoftdev@gmail.com"
+        freshness_policy: "static"
