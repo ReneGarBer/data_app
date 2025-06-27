@@ -1,4 +1,5 @@
 SELECT
-    *
+     ROW_NUMBER() OVER () AS id_tipo
+    ,*
 FROM
-    {{ source('seeds_dimensions','tipos') }}
+    {{ ref('stg_tipos') }}

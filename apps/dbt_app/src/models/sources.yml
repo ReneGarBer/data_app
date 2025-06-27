@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: seeds_dimensions
-    schema: staging
+    schema: rawdata
     tables:
       
       - name: estados
@@ -31,7 +31,7 @@ sources:
       
       - name: tipos
         columns:
-          - name: codig
+          - name: codigo
             data_tests:
               - not_null
               - unique

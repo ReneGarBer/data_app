@@ -134,3 +134,24 @@ models:
             tests:
               - not_null
               - unique
+
+  - name: dim_tipo
+    +post-hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_tipo)"
+    columns:
+      - name: id_tipo
+        description: LLave primaria
+        tests:
+          - unique
+          - not_null
+
+      - name: codigo
+        description: Codigos para cada tipo de metrica climatologica
+        tests:
+          - accepted_values:
+              values: ['ndvi','daily','prcp','srad','swe','tmax','tmin','vp']
+      
+      - name: nombre
+        description: Nombre del tipo de metrica
+        tests:
+          - not_null
+
