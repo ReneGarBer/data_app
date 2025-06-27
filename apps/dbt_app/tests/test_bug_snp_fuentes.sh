@@ -1,7 +1,6 @@
 #!bin/bash
 
 cd ../src/
-
 dbt run -s marts.dimensions.dim_fuentes -t rfnd > result.log || true
 
 if grep -q "Completed successfully" result.log; then
