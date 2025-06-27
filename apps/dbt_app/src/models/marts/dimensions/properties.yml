@@ -144,3 +144,12 @@ models:
         created_at: '2025-06-27'
         maintained_by: "renesoftdev@gmail.com"
         freshness_policy: "static"
+
+  - name: dim_tipo
+    +post-hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_tipo)"
+    columns:
+      - name: id_tipo
+        description: LLave primaria
+        tests:
+          - unique
+          - not_null
