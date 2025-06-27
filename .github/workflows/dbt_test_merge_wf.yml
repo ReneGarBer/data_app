@@ -125,6 +125,7 @@ jobs:
       - name: Merge PR
         run: |
           gh pr merge $PR_NUMBER \
+            --auto \
             --merge \
             --delete-branch \
-            --admin
+            --admin 

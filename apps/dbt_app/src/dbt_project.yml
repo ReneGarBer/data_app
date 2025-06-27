@@ -45,12 +45,15 @@ models:
 
 snapshots:
   data_app:
-    +schema: snapshots
+    schema: snapshots
+    dimensions:
+      config:
+        grants:
+          select: [dengueapprfnd]
         
 seeds:
   data_app:
-    +schema: rawdata
-    +database: dengueapp
+    schema: rawdata
     estados:
       +column_types: {
         cvegeoedo:  char(2),

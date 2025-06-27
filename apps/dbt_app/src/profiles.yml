@@ -17,7 +17,7 @@ data_app:
       password: "{{env_var('DBT_ENV_SECRET_PASSWORDRFND')}}"
       dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
       port: "{{env_var('DBT_PORT') | int }}"
-      schema: refined
+      schema: marts
       threads: 1
     anltcs:
       type: postgres
