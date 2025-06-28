@@ -153,3 +153,9 @@ models:
         tests:
           - unique
           - not_null
+
+      - name: codigo
+        descripcion: El codigo corresponde a la columna bands, de las fuentes google earth.
+        tests:
+          - accepted_values:
+              values: ['ndvi','daily','prcp','srad','swe','tmax','tmin','vp']

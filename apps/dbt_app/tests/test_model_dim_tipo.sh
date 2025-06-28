@@ -2,8 +2,6 @@
 
 cd ../src/
 
-dbt run -s staging.stg_tipos -t stg   || true
-dbt run -s marts.dimensions.dim_tipo -t rfnd || true
 dbt test -s marts.dimensions.dim_tipo -t rfnd > result.log || true
 
 if grep -q "Completed successfully" result.log; then
