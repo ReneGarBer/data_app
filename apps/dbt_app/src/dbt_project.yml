@@ -42,6 +42,8 @@ models:
             - monthly
     marts:
       +materialized: incremental
+      +grants:
+        select: ['dengueappanlst']
 
 snapshots:
   data_app:
