@@ -10,6 +10,13 @@ sources:
           - name: cvegeoedo
           - name: nom_edo
 
+      - name: municipios
+        columns:
+          - name: cvegeoedo
+          - name: cvegeomuni
+          - name: cve_mun
+          - name: nom_mun
+
       - name: fuentes
         columns:
           - name: descripcion
@@ -21,13 +28,6 @@ sources:
           - name: url
             data_tests:
               - url_valido
-
-      - name: municipios
-        columns:
-          - name: cvegeoedo
-          - name: cvegeomuni
-          - name: cve_mun
-          - name: nom_mun
       
       - name: tipos
         columns:
@@ -43,3 +43,8 @@ sources:
           - name: nombre
             data_tests:
               - not_null
+  - name: medicion_climatica
+    tables:
+      - name: modis_ndvi_historic
+
+      - name: nasa_surface_weather_historic
