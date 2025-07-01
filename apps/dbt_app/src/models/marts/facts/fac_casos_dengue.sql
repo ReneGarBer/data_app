@@ -46,7 +46,8 @@ With union_all_monthly AS (
 )
 , agregar_fk AS (
 SELECT
-        TO_CHAR(current_date,'YYYYMMDD') as id_fecha_carga
+         ROW_NUMBER() OVER() as id_casos_dengue
+        ,TO_CHAR(current_date,'YYYYMMDD') as id_fecha_carga
         ,TO_CHAR((fecha_final::date - cadencia::interval),'YYYYMMDD') as id_fecha_inicial
         ,REPLACE(fecha_final, '-', '') as id_fecha_final
         ,3 as id_fuente
