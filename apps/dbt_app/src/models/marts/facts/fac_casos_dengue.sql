@@ -45,9 +45,8 @@ With union_all_monthly AS (
         union_all_monthly
 )
 , agregar_fk AS (
-SELECT
-         ROW_NUMBER() OVER() as id_casos_dengue
-        ,TO_CHAR(current_date,'YYYYMMDD') as id_fecha_carga
+    SELECT 
+         TO_CHAR(current_date,'YYYYMMDD') as id_fecha_carga
         ,TO_CHAR((fecha_final::date - cadencia::interval),'YYYYMMDD') as id_fecha_inicial
         ,REPLACE(fecha_final, '-', '') as id_fecha_final
         ,3 as id_fuente
@@ -57,4 +56,13 @@ SELECT
     FROM
         agregar_fecha_final
 )
-SELECT * FROM agregar_fk
+, generar_sk as (
+    SELECT 
+        {{ dbt_utils.generate_surrogate_key(
+            ['id_fecha_inicial'
+            , 'id_fecha_final'
+            ,'id_region']) }} as id_caso
+        , * 
+    FROM agregar_fk
+)
+SELECT * FROM generar_sk
