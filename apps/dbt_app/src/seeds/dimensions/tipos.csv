@@ -1,5 +1,5 @@
 codigo,descripcion_corta,descripcion_larga,nombre
-"daily","Duracion del periodo de luz diaria","Duracion del periodo de luz diaria. Basado en el periodo de dia durante el cual el sol esta sobre un horizonte plano hipotetico. Unidad: segundos, Min: 0, Max: 86400","Luz diaria"
+"dayl","Duracion del periodo de luz diaria","Duracion del periodo de luz diaria. Basado en el periodo de dia durante el cual el sol esta sobre un horizonte plano hipotetico. Unidad: segundos, Min: 0, Max: 86400","Luz diaria"
 "ndvi","Indice de vegetacion de diferencia normalizada","Indice de vegetacion de diferencia normalizada. Tamanio de pixel: 463.313m. Min: -1. Max: 1","Normalized Difference Vegetation Index"
 "prcp","Precipitacion total diaria","Precipitacion total diaria, suma de todas las formas convertidas a equivalente de agua. Unidad: mm, Min: 0, Max: 544","Precipitacion"
 "srad","Densidad de flujo de radiacion de onda corta incidente","Densidad de flujo de radiacion de onda corta incidente, tomada como promedio durante el periodo de luz diurna del dia. Unidad: W/m^2, Min: 0, Max: 1051.","Radiacion"

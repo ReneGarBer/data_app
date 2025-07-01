@@ -4,7 +4,7 @@ sources:
   - name: seeds_dimensions
     schema: rawdata
     tables:
-      
+
       - name: estados
         columns:
           - name: cvegeoedo
@@ -36,15 +36,18 @@ sources:
               - not_null
               - unique
               - accepted_values:
-                  values: ['ndvi','daily','prcp','srad','swe','tmax','tmin','vp']
+                  values: ['ndvi','dayl','prcp','srad','swe','tmax','tmin','vp']
 
           - name: descripcion_corta
           - name: descripcion_larga
           - name: nombre
             data_tests:
               - not_null
+
   - name: medicion_climatica
+    schema: rawdata
     tables:
+
       - name: modis_ndvi_historic
 
       - name: nasa_surface_weather_historic

@@ -32,4 +32,42 @@ models:
         tests:
           - relationships:
               to: ref('dim_region')
-              field: codigo_completo
+              field: id_region
+
+  - name: fac_medicion_climatica
+    +post_hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_medicion)"
+    columns:
+      - name: id_medicion
+        tests:
+          - unique
+          - not_null
+
+      - name: id_fecha_carga
+        tests:
+          - relationships:
+              to: ref('dim_fecha')
+              field: id_fecha
+
+      - name: id_fecha_inicial
+        tests:
+          - relationships:
+              to: ref('dim_fecha')
+              field: id_fecha
+
+      - name: id_fecha_final
+        tests:
+          - relationships:
+              to: ref('dim_fecha')
+              field: id_fecha
+
+      - name: id_region
+        tests:
+          - relationships:
+              to: ref('dim_region')
+              field: id_region
+
+      - name: id_tipo
+        tests:
+          - relationships:
+              to: ref('dim_tipo')
+              field: codigo              
