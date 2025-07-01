@@ -10,7 +10,7 @@ WITH remove_nulls AS (
     SELECT
         *
     FROM remove_nulls
-    WHERE codigo in ('ndvi','daily','prcp','srad','swe','tmax','tmin','vp')
+    WHERE codigo in ('ndvi','dayl','prcp','srad','swe','tmax','tmin','vp')
 )
 
 SELECT

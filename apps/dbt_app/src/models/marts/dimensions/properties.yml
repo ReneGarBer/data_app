@@ -96,4 +96,4 @@ models:
         descripcion: El codigo corresponde a la columna bands, de las fuentes google earth.
         tests:
           - accepted_values:
-              values: ['ndvi','daily','prcp','srad','swe','tmax','tmin','vp']
+              values: ['ndvi','dayl','prcp','srad','swe','tmax','tmin','vp']

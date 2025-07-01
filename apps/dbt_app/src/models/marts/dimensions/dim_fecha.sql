@@ -1,5 +1,5 @@
 
-{{ calendario('2010-01-01','2035-01-01') }}
+{{ calendario('2000-01-01','2035-01-01') }}
 
 SELECT 
         TO_CHAR(dia,'YYYYMMDD') id_fecha
