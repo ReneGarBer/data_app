@@ -23,6 +23,25 @@ WITH union_all_metrics AS (
     FROM
         {{ ref('stg_nasa_surface_weather_historic') }}    
 )
+, round_values AS (
+    SELECT
+          estado_num
+        , municipio_num
+        , fecha
+        , inicio
+        , fin
+        , cadencia
+        , tipo
+        , ROUND(valor,4) AS valor
+    FROM
+        union_all_metrics
+)
+, remove_dups AS (
+    SELECT
+        DISTINCT *
+    FROM
+        round_values
+)
 , order_by AS (
     SELECT
           estado_num
@@ -34,14 +53,13 @@ WITH union_all_metrics AS (
         , tipo
         , valor
     FROM
-        union_all_metrics
+        remove_dups
     ORDER BY
         municipio_num, fecha
 )
-, agregar_pk_fk AS (
+, agregar_fk AS (
     SELECT
-          ROW_NUMBER() OVER() id_medicion
-        , TO_CHAR(current_date,'YYYYMMDD') as id_fecha_carga
+          TO_CHAR(current_date,'YYYYMMDD') as id_fecha_carga
         , TO_CHAR(inicio,'YYYYMMDD') as id_fecha_inicial
         , TO_CHAR(fin,'YYYYMMDD') as id_fecha_final
         , municipio_num as id_region
@@ -51,4 +69,14 @@ WITH union_all_metrics AS (
     FROM
         order_by
 )
-SELECT * FROM agregar_pk_fk
+, generar_sk AS (
+    SELECT 
+        {{ dbt_utils.generate_surrogate_key(
+            ['id_fecha_inicial'
+            , 'id_fecha_final'
+            ,'id_region'
+            ,'id_tipo']) }} as id_medicion
+        , * 
+    FROM agregar_fk 
+)
+SELECT * FROM generar_sk

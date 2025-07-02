@@ -3,6 +3,7 @@ version: 2
 models:
   - name: fac_casos_dengue
     description: Tabla de hechos de casos de dengue en jalisco
+    +post_hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_caso)"
     columns:
       - name: id_fecha_carga
         tests:
