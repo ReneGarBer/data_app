@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: monitor_medicion_climatica
+    description: | 
+      Este modelo se utiliza para monitorear los datos cargados a las tablas. 
+      En este modelo se encuentran el codigo de las regiones para las que no se les
+      a cargado datos, el tipo de dato el anio y mes al que corresponde.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - municipio_num
+            - fecha
+            - fuente

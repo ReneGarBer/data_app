@@ -18,5 +18,5 @@
 }}
 SELECT
     *
-FROM {{source('raw_data','fuentes')}}
+FROM {{source('seeds_dimensions','fuentes')}}
 {% endsnapshot %}
