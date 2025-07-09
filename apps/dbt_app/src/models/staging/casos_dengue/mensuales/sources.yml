@@ -50,6 +50,3 @@ sources:
             
       - name: "2024"
         descripcion: "Casos mensuales de dengue por municipio de jalisco en el anio 2024. Granularidad: municipio"
-      
-      - name: "fuentes"
-        descripcion: "Informacion sobre las fuentes de los datos utilizados en este proyecto"
