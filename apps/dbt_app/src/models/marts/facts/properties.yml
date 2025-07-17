@@ -71,4 +71,20 @@ models:
         tests:
           - relationships:
               to: ref('dim_tipo')
-              field: codigo              
+              field: codigo
+
+  - name: fac_medicion_climatica_promedios_mensuales
+    config:
+      tags: aggregated
+    columns:
+      - name: promedio_mensual 
+        tests:
+          - not_null
+
+  - name: fac_medicion_climatica_promedios_semanales
+    config:
+      tags: aggregated
+    columns:
+      - name: promedio_semanal 
+        tests:
+          - not_null
