@@ -1,6 +1,7 @@
 #!bin/bash
 
 cd ../src/
+dbt deps
 dbt run -f -s marts.facts.fac_casos_dengue -t rfnd 
 dbt test -s marts.facts.fac_casos_dengue -t rfnd > result.log || true
 
