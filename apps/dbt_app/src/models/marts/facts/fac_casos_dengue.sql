@@ -47,7 +47,11 @@ With union_all_monthly AS (
 , agregar_fk AS (
     SELECT 
          TO_CHAR(current_date,'YYYYMMDD') as id_fecha_carga
-        ,TO_CHAR((fecha_final::date - cadencia::interval),'YYYYMMDD') as id_fecha_inicial
+        ,CASE 
+            WHEN cadencia = '1 month' 
+                THEN TO_CHAR(DATE_TRUNC('month',fecha_final::date),'YYYYMMDD')
+            ELSE TO_CHAR((fecha_final::date - cadencia::interval),'YYYYMMDD') 
+         END as id_fecha_inicial
         ,REPLACE(fecha_final, '-', '') as id_fecha_final
         ,3 as id_fuente
         ,LPAD(municipio_num ::text, 5, '0') as id_region

@@ -4,71 +4,75 @@ models:
   - name: fac_casos_dengue
     description: Tabla de hechos de casos de dengue en jalisco
     +post_hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_caso)"
+    tags: metricas
     columns:
       - name: id_fecha_carga
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_fecha')
               field: id_fecha
 
       - name: id_fecha_inicial
-        tests:
+        data_tests:
+          - valid_id_fecha_inicial_month    
           - relationships:
               to: ref('dim_fecha')
               field: id_fecha
 
       - name: id_fecha_final
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_fecha')
               field: id_fecha
       
       - name: id_fuente
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_fuente')
               field: id
 
       - name: id_region
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_region')
               field: id_region
 
   - name: fac_medicion_climatica
     +post_hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_medicion)"
+    tags: metricas
     columns:
       - name: id_medicion
-        tests:
+        data_tests:
           - unique
           - not_null
 
       - name: id_fecha_carga
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_fecha')
               field: id_fecha
 
       - name: id_fecha_inicial
-        tests:
+        data_tests:            
           - relationships:
               to: ref('dim_fecha')
               field: id_fecha
+          
 
       - name: id_fecha_final
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_fecha')
               field: id_fecha
 
       - name: id_region
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_region')
               field: id_region
 
       - name: id_tipo
-        tests:
+        data_tests:
           - relationships:
               to: ref('dim_tipo')
               field: codigo
@@ -78,7 +82,7 @@ models:
       tags: aggregated
     columns:
       - name: promedio_mensual 
-        tests:
+        data_tests:
           - not_null
 
   - name: fac_medicion_climatica_promedios_semanales
@@ -86,5 +90,5 @@ models:
       tags: aggregated
     columns:
       - name: promedio_semanal 
-        tests:
+        data_tests:
           - not_null
