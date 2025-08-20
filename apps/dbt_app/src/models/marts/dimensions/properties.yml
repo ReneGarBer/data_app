@@ -4,7 +4,7 @@ models:
   - name: dim_fecha
     description: Dimension de fecha con granularidad diaria, desde el anio 2010-01-01 hasta el 2035-01-01.
     config:
-      materialized: table
+
       unique_key: id_fecha
       meta:
         developer: Rene Garcia Bernal
@@ -47,7 +47,7 @@ models:
     description: "Dimension region. Contiene estados y municipios de mexico"
     +post-hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_region)"
     config:
-      materialized: table
+
       unique_key: id_region
       meta:
         developer: "Rene Garcia Bernal"

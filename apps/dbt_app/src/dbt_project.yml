@@ -41,9 +41,17 @@ models:
           +tags:
             - monthly
     marts:
-      +materialized: incremental
-      +grants:
-        select: ['dengueappanlst']
+      facts:
+        +materialized: incremental
+
+      dimensions:
+        +materialized: incremental
+
+      reports:
+        schema: analytics
+        +materialized: view
+        +grants:
+          select: ['dengueappanlst']
 
 snapshots:
   data_app:
@@ -56,33 +64,34 @@ snapshots:
 seeds:
   data_app:
     schema: rawdata
-    estados:
-      +column_types: {
-        cvegeoedo:  char(2),
-        nom_edo:  varchar(31)
-      }
-        
-    municipios:
-      +column_types: {
-        cvegeoedo:  char(2),
-        cvegeomuni: char(5),
-        cve_mun: char(3),
-        nom_mun: varchar(80)
-      }
+    dimensions:
+      estados:
+        +column_types: {
+          cvegeoedo:  char(2),
+          nom_edo:  varchar(31)
+        }
+          
+      municipios:
+        +column_types: {
+          cvegeoedo:  char(2),
+          cvegeomuni: char(5),
+          cve_mun: char(3),
+          nom_mun: varchar(80)
+        }
 
-    fuentes: 
-      +column_types: {
-        id: int,
-        descripcion: text,
-        fecha_disponibilidad_inicio: varchar(10),
-        fecha_disponibilidad_final: varchar(10),
-        nombre: varchar(50),
-        url: text
-      }       
-    tipos:
-      +column_types: {
-        codigo: varchar(10),
-        descripcion_corta: varcha(50),
-        descripcion_larga: text,
-        nombre: varchar(30)
-      }
+      fuentes: 
+        +column_types: {
+          id: int,
+          descripcion: text,
+          fecha_disponibilidad_inicio: varchar(10),
+          fecha_disponibilidad_final: varchar(10),
+          nombre: varchar(50),
+          url: text
+        }       
+      tipos:
+        +column_types: {
+          codigo: varchar(10),
+          descripcion_corta: varcha(50),
+          descripcion_larga: text,
+          nombre: varchar(30)
+        }
