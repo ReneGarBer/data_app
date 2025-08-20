@@ -31,7 +31,7 @@ WITH join_region AS (
         MIN(fecha) fecha_inicial,
         MAX(fecha) fecha_final,
         id_tipo,
-        ROUND(AVG(medicion),4) as promedio_semanal
+        ROUND(AVG(medicion),4) as medicion
     FROM join_fecha
     GROUP BY 1,2,3,4,5,8
 )
