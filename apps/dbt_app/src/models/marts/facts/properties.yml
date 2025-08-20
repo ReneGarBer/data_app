@@ -38,6 +38,7 @@ models:
               field: id_region
 
   - name: fac_medicion_climatica
+    schema: marts
     +post_hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_medicion)"
     tags: metricas
     columns:

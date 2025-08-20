@@ -26,5 +26,5 @@ data_app:
       password: "{{env_var('DBT_ENV_SECRET_PASSWORDANLST')}}"
       dbname: "{{env_var('DBT_ENV_SECRET_DATABASE')}}"
       port: "{{env_var('DBT_PORT') | int }}"
-      schema: analytics
+      schema: marts
       threads: 1
