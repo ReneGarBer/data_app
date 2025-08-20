@@ -28,8 +28,8 @@ WITH join_region AS (
         municipio,
         anio,
         mes,
-        MIN(fecha) inicio_de_mes,
-        MAX(fecha) fin_de_mes,
+        MIN(fecha) fecha_inicial,
+        MAX(fecha) fecha_final,
         id_tipo,
         ROUND(AVG(medicion),4) as promedio_mensual
     FROM join_fecha

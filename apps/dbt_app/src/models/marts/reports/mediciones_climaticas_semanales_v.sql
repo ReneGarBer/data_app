@@ -28,8 +28,8 @@ WITH join_region AS (
         municipio,
         anio,
         semana,
-        MIN(fecha) inicio_de_semana,
-        MAX(fecha) fin_de_semana,
+        MIN(fecha) fecha_inicial,
+        MAX(fecha) fecha_final,
         id_tipo,
         ROUND(AVG(medicion),4) as promedio_semanal
     FROM join_fecha
