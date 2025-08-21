@@ -15,10 +15,12 @@ WITH pivote as (
     }}
 )
 , remover_nulls as (
-    SELECT 
-        *
+    SELECT
+         anio
+        ,municipio_num
+        ,mes
+        ,COALESCE(casos,0) casos
     FROM pivote
-    WHERE casos is not null
 )
 , remover_dups as (
     SELECT 
