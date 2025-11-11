@@ -1,5 +1,6 @@
 import abc
 import ee
+import pandas as pd
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from sqlalchemy import create_engine, text
@@ -57,6 +58,7 @@ class PostgresConnector(DBConnector):
     def test_connection(self):
         try:
             self.engine = create_engine(self.url)
+            self.connection = self.engine.connect()
             with self.engine.connect() as connection:
                 result = connection.execute(text("SELECT version();"))
                 for row in result:
@@ -68,6 +70,19 @@ class PostgresConnector(DBConnector):
     def configure(self,config:dict):
         self.table = config.get('table')
         self.schema = config.get('schema')
+
+    
+    
+    def get_data(self,table,schema,regiones,fechas):
+        date_cols = list(fechas.keys())
+        query = f"SELECT * FROM {schema}.{table} WHERE id_region IN ({','.join(map(str, regiones))}) " \
+                f"AND {date_cols[0]} >= '{fechas.get(date_cols[0])}' AND {date_cols[1]}  <= '{fechas.get(date_cols[1])}';"
+
+        df = (
+            pd.read_sql(query, self.connection)
+            .astype({'anio':'int','mes':'int'})
+        )
+        return df
 
 class EEConnector():
     def __init__(self,credentials):

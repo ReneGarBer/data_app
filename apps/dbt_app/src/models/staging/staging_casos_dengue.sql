@@ -11,7 +11,7 @@ WITH union_all  as (
         {% endif %}
     {% endfor %}
 )
-, pivote as (
+, unpivot as (
     {% set columnas=[
         "Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
         "Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
@@ -19,7 +19,7 @@ WITH union_all  as (
 
     {% set incluir=["municipio_num","anio"]%}
     {{
-        pivote_fila_a_columna(
+        unpivot(
             "union_all",
             incluir,
             columnas,
@@ -30,7 +30,7 @@ WITH union_all  as (
 , no_nulls as (
     SELECT
         *
-    FROM pivote
+    FROM unpivot
     WHERE "casos" is not null
 )
 , no_dups as (

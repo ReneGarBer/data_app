@@ -1,4 +1,4 @@
-WITH pivote as (
+WITH unpivot as (
     {% set columnas=[
         "Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
         "Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
@@ -7,7 +7,7 @@ WITH pivote as (
     {% set incluir=["'2024' as \"anio\"","municipio_num"]%}
     
     {{
-        pivote_fila_a_columna(
+        unpivot(
             source('raw_data','2024'),
             incluir,
             columnas,
@@ -21,7 +21,7 @@ WITH pivote as (
         ,municipio_num
         ,mes
         ,COALESCE(casos,0) casos
-    FROM pivote
+    FROM unpivot
 )
 , remover_dups as (
     SELECT 

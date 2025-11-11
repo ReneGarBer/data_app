@@ -8,3 +8,10 @@ token
 *.txt
 .apps/
 !apps/dbt_app/requirements.txt
+Include/
+*.dump
+dengueapp.sql
+tests/
+logs/
+apps/extract_app/logs/
+apps/extract_app/data

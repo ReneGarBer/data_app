@@ -1,4 +1,4 @@
-{%- macro pivote_fila_a_columna(
+{%- macro unpivot(
     tabla,
     incluir = [],
     columnas = [],

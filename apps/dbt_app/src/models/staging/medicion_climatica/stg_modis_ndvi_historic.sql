@@ -21,10 +21,10 @@ WITH no_nulls AS (
     SELECT
           estado_num
         , municipio_num
-        , fecha
+        , REPLACE(fecha,'_','') as fecha
         , to_timestamp(inicio::double precision/1000) as inicio
         , to_timestamp(fin::double precision/1000) as fin
-        , ndvi
+        , ROUND(ndvi,4) ndvi
     FROM
         remover_dups
 )
@@ -35,8 +35,7 @@ WITH no_nulls AS (
         , fecha
         , inicio
         , fin
-        , 'ndvi' as tipo
-        , ndvi as valor
+        , ndvi 
     FROM
         format_fechas
 )

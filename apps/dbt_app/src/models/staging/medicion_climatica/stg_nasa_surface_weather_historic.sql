@@ -1,67 +1,22 @@
-WITH pivote AS (
-    {% set columnas=[
-          "dayl"
-        , "prcp"
-        , "srad"
-        , "swe"
-        , "tmax"
-        , "tmin"
-        , "vp"] 
-    %}
-    {% set incluir=[
-         "estado_num"
-        ,"municipio_num"
-        ,"municipio"
-        ,"fecha"
-        ,"inicio"
-        ,"fin"]
-    %}
-    {{  
-        pivote_fila_a_columna(
-             source('medicion_climatica','nasa_surface_weather_historic')
-            ,incluir
-            ,columnas
-            ,'tipo'
-            ,'valor'
-        )
-    }}
-)
-, no_nulls AS (
+WITH format_columns AS (
+    SELECT 
+         estado_num
+        ,municipio_num
+        ,fecha
+        ,to_timestamp(inicio::double precision/1000) as inicio
+        ,to_timestamp(fin::double precision/1000) as fin
+        ,ROUND(dayl,4) as dayl
+        ,ROUND(prcp,4) as prcp
+        ,ROUND(srad,4) as srad
+        ,ROUND(swe,4) as swe
+        ,ROUND(tmax,4) as tmax
+        ,ROUND(tmin,4) as tmin
+        ,ROUND(vp,4) as vp
+    FROM {{source('medicion_climatica','nasa_surface_weather_historic')}}
+), add_cadenceia as (
     SELECT
-          estado_num
-        , municipio_num
-        , municipio
-        , fecha
-        , inicio
-        , fin
-        , tipo
-        , valor
-    FROM
-        pivote
-    WHERE
-        valor is not null
+        *
+        ,'1 day' as cadencia
+    FROM format_columns
 )
-, no_dups AS (
-    SELECT
-        DISTINCT *
-    FROM
-        no_nulls
-)
-, format_fechas AS (
-    SELECT
-          estado_num
-        , municipio_num
-        , municipio
-        , fecha
-        , to_timestamp(inicio::double precision/1000) as inicio
-        , to_timestamp(fin::double precision/1000) as fin
-        , tipo
-        , valor    
-    FROM
-        no_dups
-)
-
-SELECT 
-     *
-    ,'1 day' as cadencia    
-FROM format_fechas
+SELECT * FROM add_cadenceia

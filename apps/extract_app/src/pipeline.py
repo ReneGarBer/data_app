@@ -1,11 +1,12 @@
 from configuration import Configuration
+import connectors
 from logs import logs
 import pandas as pd
-from connectores import *
+from connectors.connectores import *
 from typing import Optional
 class EEpipelines:
 
-    def __init__(self,config: Configuration, source: Optional['Connector'], target: Optional['Connector']):
+    def __init__(self,config: Configuration, source: Optional['DBConnector'], target: Optional['DBConnector']):
         self.config = config
         self.source = source
         self.target = target

@@ -2,3 +2,6 @@ earthengine-api
 pandas
 sqlalchemy
 psycopg2-binary
+seaborn
+statsmodels
+scikit-learn

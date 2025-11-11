@@ -4,7 +4,6 @@ models:
   - name: dim_fecha
     description: Dimension de fecha con granularidad diaria, desde el anio 2010-01-01 hasta el 2035-01-01.
     config:
-
       unique_key: id_fecha
       meta:
         developer: Rene Garcia Bernal
@@ -85,6 +84,9 @@ models:
 
   - name: dim_tipo
     +post-hook: "ALTER TABLE {{ this }} ADD PRIMARY KEY (id_tipo)"
+    config:
+      materialized: table
+
     columns:
       - name: id_tipo
         description: LLave primaria
